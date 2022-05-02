@@ -181,7 +181,8 @@ export default {
 
 .img-container a:hover{
     border: 1px solid #0d6efd;
-    background: #0d6efd
+    background: #0d6efd;
+    color: white;
 }
 
 .custom-btn{
