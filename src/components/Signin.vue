@@ -1,31 +1,40 @@
 <script>
 export default {
-    name : 'Signin'
+    name : 'Signin',
+    methods : {
+        loginMove : function(){
+            var x = document.getElementById("login");
+            var y = document.getElementById("register");
+            var z = document.getElementById("btn");
+
+            x.style.left = "50px";
+            y.style.left = "450px";
+            z.style.left = "0";
+        },
+
+        registerMove : function(){
+            var x = document.getElementById("login");
+            var y = document.getElementById("register");
+            var z = document.getElementById("btn");
+
+            x.style.left = "-400px";
+            y.style.left = "50px";
+            z.style.left = "110px";
+        }
+    }
 }
-    var x = document.getElementById("login");
-    var y = document.getElementById("register");
-    var z = document.getElementById("btn");
 
-    function register(){
-        x.style.left = "-400px";
-        y.style.left = "50px";
-        z.style.left = "110px";
-    }
-
-    function login(){
-        x.style.left = "50px";
-        y.style.left = "450px";
-        z.style.left = "0";
-    }
 </script>
 
 <template>
         <div class="hero">
             <div class="form__box">
                 <div class="button__box">
-                    <div id="btn"></div>
-                    <button type="button" class="toggleBtn" onclick="login()">Log In</button>
-                    <button type="button" class="toggleBtn" onclick="register()">Sign Up</button>
+                    <div id="btn">
+
+                    </div>
+                    <button @click="loginMove" type="button" class="toggleBtn">Log In</button>
+                    <button @click="registerMove" type="button" class="toggleBtn">Sign Up</button>
                 </div>
 
                 <div id="error"></div>
@@ -50,6 +59,7 @@ export default {
                 </form>
             </div>
         </div>
+        
             
 </template>
 
@@ -95,6 +105,7 @@ export default {
 
 .toggleBtn {
     padding: 10px 30px;
+    margin-left: 5px;
     cursor: pointer;
     background: transparent;
     border: 0;
@@ -106,7 +117,7 @@ export default {
     top: 0;
     left: 0;
     position: absolute;
-    width: 110px;
+    width: 124px;
     height: 100%;
     background: linear-gradient(to right, #2248e2, #649df1);
     border-radius: 30px;
