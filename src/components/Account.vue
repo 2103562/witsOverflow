@@ -1,6 +1,15 @@
 <script>
 export default {
-    name : 'Account'
+    name : 'Account',
+    methods: {
+        validatePhoneLength(PhoneNo) {
+            if(PhoneNo.length()<10){return false}
+            else{return true}
+            },
+        validateNameLength() {},
+        validatePassword() {},
+        },
+
 }
 </script>
 
@@ -30,40 +39,21 @@ export default {
 
             <div class="form-group">
 
-                <label for="dname">Display Name:</label>
+                <label for="dname">Username:</label>
                 <input type="text" class="form-control" id="dname">
             
             </div>
 
-            <div class="form-group">
-
-                <label for="name">Full Name:</label>
-                <input type="password" class="form-control" id="name">
-
-            </div>
-            
-        </div>
-
-        <div class="row d-flex flex-row justify-content-between">
-
-            <div class="form-group">
+                        <div class="form-group">
 
                 <label for="email">Email:</label>
                 <input type="text" class="form-control" id="email">
             
             </div>
-
-            <div class="form-group">
-
-                <label for="phone">Phone number:</label>
-                <input type="text" class="form-control" id="phone">
-
-            </div>
-
             
         </div>
 
-        <div class="row d-flex flex-row justify-content-between">
+        <div class="row justify-content-between">
 
             <div class="form-group">
 
@@ -87,16 +77,16 @@ export default {
             <p> <strong>Delete account</strong> </p>
             <div class="d-flex justify-content-between delete-account">
                 <p>By deleting your account you will lose all your data</p>
-                <a href="#">Delete account...</a>
+                <a href="#">Delete account</a>            
+                <a class="delete-btn" href="#">Delete</a>
             </div>
 
         </div>
 
         <div class="row d-flex justify-content-between">
+            <a class="custom-btn">Save changes
 
-            <a class="custom-btn" href="index.html">Back</a>
-
-            <a class="custom-btn">Save changes</a>
+            </a>
 
         </div>
 
@@ -191,6 +181,18 @@ export default {
     color: white;
     font-weight: 700;
     background: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    text-decoration: none;
+}
+.delete-btn{
+    width: 160px;
+    height: 45px;
+    color: white;
+    font-weight: 700;
+    background: #af0000;
     display: flex;
     align-items: center;
     justify-content: center;
