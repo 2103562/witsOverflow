@@ -20,9 +20,7 @@ export default {
 
         <div class="navbar-nav d-flex flex-row">
             <a class="nav-item nav-link active" href="#/">Home</a>
-            <a class="nav-item nav-link" href="#">Features</a>
-            <a class="nav-item nav-link" href="#">Pricing</a>
-
+            
             <template v-if="state == false">
             <a class="nav-item nav-link disabled" href="#/account">Account</a>
             <a class="btn btn-outline-primary btn-login" href="#/signin">Log in</a>
