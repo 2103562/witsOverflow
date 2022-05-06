@@ -15,7 +15,14 @@
   <div id="preview" class="d-flex flex-row">
      
     <img v-if="item.imageUrl" :src="item.imageUrl" class="user-avatar" />
-     <input type = "file" accept="image/*" @change="onChange" />
+    
+        <label class="upload-button">
+     <input id="browse" type = "file" accept="image/*" style="hidden" @change="onChange" />
+      <i ></i> Upload
+     </label>
+      
+    
+
     
   </div>
                     
@@ -154,6 +161,7 @@
     text-decoration: none;
     font-weight: 600;
     border-radius: 4px;
+    
 }
 
 .img-container a:hover{
@@ -186,6 +194,16 @@
     border-radius: 6px;
     text-decoration: none;
 }
+input[type="file"] {
+        display: none;
+    }
+
+    .uploaderbutton {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
 </style>
 <script>
 export default {
