@@ -1,17 +1,4 @@
-<script>
-export default {
-    name : 'Account',
-    methods: {
-        validatePhoneLength(PhoneNo) {
-            if(PhoneNo.length()<10){return false}
-            else{return true}
-            },
-        validateNameLength() {},
-        validatePassword() {},
-        },
 
-}
-</script>
 
 <template>
     <div class="account-container d-flex flex-column">
@@ -24,13 +11,13 @@ export default {
                     Avatar
                 </h5>
                     
-                <div class="img-container d-flex">
-
-                    <img class="user-avatar" src="../assets/defaultDP.png">
-                    <a class="upload-button">Upload</a>
-                    <a class="remove-button">Remove</a>
-        
-                </div>
+            
+  <div id="preview" class="d-flex flex-row">
+     
+    <img v-if="item.imageUrl" :src="item.imageUrl" class="user-avatar" />
+     <input type = "file" accept="image/*" @change="onChange" />
+    
+  </div>
                     
             </div>
         </div>
@@ -200,3 +187,41 @@ export default {
     text-decoration: none;
 }
 </style>
+<script>
+export default {
+    name : 'Account',
+    // props:{
+    //     value: File
+    // },
+     data(){
+         return {
+             item:{
+       image : null,
+          imageUrl: null
+             }
+        }
+},
+    
+    methods: {
+            onChange(e) {
+      const file = e.target.files[0]
+      this.image = file
+      this.item.imageUrl = URL.createObjectURL(file)
+    },
+         validatePhoneLength(PhoneNo) {
+            if(PhoneNo.length()<10){return false}
+            else{return true}
+            },
+     validateNameLength() {},
+         validatePassword() {},
+        },
+         
+    
+  }
+
+
+    
+        
+
+
+</script>
