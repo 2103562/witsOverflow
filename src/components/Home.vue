@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios'
 export default {
     name : 'Home',
     data(){
@@ -36,6 +37,38 @@ export default {
                 }                
             ]
         }
+    },
+    methods:{
+       /* testCall(){
+            axios({
+                method: 'post',
+                url: 'http://localhost:4000/hello',
+                data: {
+                    username: '1234567',
+                    password: '1234567pass'
+                }
+                }).then(function (response) {
+                // handle success
+                console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                });
+        } */
+         testCall(){
+             axios.get('http://localhost:4000/questions')
+             .then(response =>{
+                 console.log(response.data['result'])
+                 this.questions = response.data['result']
+             })
+
+                
+        }
+
+    },
+    mounted(){
+        this.testCall()
     }
 }
 </script>
@@ -84,7 +117,7 @@ export default {
             </a>
             <a class="btn btn-outline-dark" href="#/signin">
                 Vote
-            </a>
+            </a>       
         </div>
 
         <div class="top-questions-container d-flex flex-column">
