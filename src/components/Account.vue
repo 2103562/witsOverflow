@@ -1,13 +1,16 @@
 <script>
 export default {
     name: 'Account',
-
+    data() {
+        return {
+            //regex for email validation
+            reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+        }
+    },
     methods: {
         validate() {
 
-            // // allow for java's api to show error messages
-            // const myform = document.getElementById('invalidate');
-            // myform.noValidate = true;
+           
 
             //extract values
             var userName = String(document.getElementById("dname").value);
@@ -25,17 +28,14 @@ export default {
 
             // validating phone numbers-> if needed in future
             // if (!this..match('^[0-9]{10}$')) { bValid=false }
-            // var strRegex=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-//             console.log(email.match(
-//     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-//   ))
-//             console.log(email.match(strRegex))
-//             if (!email.match(strRegex)) {
-                
-//                 bValid = false;
-//                 alert("Invalid e-mail")
-//                 // emailValid.setCustomValidity("I am expecting an e-mail address!");
-//             }
+        
+            var strRegex = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
+            console.log(email.match(strRegex))
+            if (!this.reg.test(email)) {
+                bValid = false;
+                alert("Invalid e-mail")
+               
+            }
 
             if (userName.length > 15 || userName.length == 0) {
                 bValid = false;
@@ -43,11 +43,12 @@ export default {
             }
 
             // can show errors to user on ui later
-            if (password != confirm || password.length==0) {
+            if (password != confirm || password.length == 0) {
                 bValid = false;
                 alert("Passwords do not match")
             }
             if (bValid) {
+                //add to DB later
                 alert("User details captured successfully")
             } else {
 
