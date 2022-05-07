@@ -36,7 +36,7 @@ export default {
 //                 alert("Invalid e-mail")
 //                 // emailValid.setCustomValidity("I am expecting an e-mail address!");
 //             }
-=
+
             if (userName.length > 15 || userName.length == 0) {
                 bValid = false;
                 alert("Invalid username length")
