@@ -27,6 +27,16 @@ npm run dev
 ```sh
 npm run build
 ```
+### Run mysql server
+
+To start server with mysql:
+
+open terminal/cmd at api folder from project
+
+node server.js
+
+periodically run the same command if server dies
+
 # witsOverflow
 An online forum that allows users to ask, answer, vote, mark and moderate questions and answers, as well as earn achievements for participation 
 
