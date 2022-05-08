@@ -3,12 +3,14 @@ import Header from './components/Header.vue'
 import Account from './components/Account.vue'
 import Home from './components/Home.vue'
 import Signin from './components/Signin.vue'
+import Question from './components/Question.vue'
 
 const routes = {
   '/': Home,
   '/account': Account,
   '/signin': Signin,
   '/signup': Signin,
+  '/question': Question,
 }
 
 export default{
