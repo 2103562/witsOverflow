@@ -1,6 +1,13 @@
 <script>
+import axios from 'axios'
 export default {
     name : 'Signin',
+    data(){
+        return{
+            username : '',
+            password : ''
+        }
+    },
     methods : {
         loginMove : function(){
             var x = document.getElementById("login");
@@ -20,6 +27,21 @@ export default {
             x.style.left = "-400px";
             y.style.left = "50px";
             z.style.left = "110px";
+        },
+
+        loginCall(){
+             axios.post('http://localhost:4000/login',{
+                 username : this.username,
+                 password : this.password
+             })
+             .then(response =>{
+                 console.log(response.data['status'])
+                 if (response.data['status'] == 'true'){
+                     this.$store.commit('logged',this.username)
+                    console.log(this.$store.state.signedIn)
+                 }
+
+             })
         }
     }
 }
@@ -39,16 +61,16 @@ export default {
 
                 <div id="error"></div>
 
-                <form id="login" class="input__group" action="/" method="POST">
+                <form id="login" class="input__group">
                     <h2>Login</h2>
-                        <input type="text" name="Username" class="input__field" placeholder="Username" required>
-                        <input type="text" name="UserPassword" class="input__field" placeholder="Password" minlength=8 required>
+                        <input v-model="username" type="text" name="Username" class="input__field" placeholder="Username" required>
+                        <input v-model="password" type="text" name="UserPassword" class="input__field" placeholder="Password" minlength=8 required>
                         <input type="checkbox" class="check__box"><span>Remember Password</span>
-                        <button type="submit" class="submitBtn">Log In</button>   
+                        <button @click="loginCall" type="submit" class="submitBtn">Log In</button>   
                         
                 </form>
                 
-                <form id="register" class="input__group" action="/" method="POST">
+                <form id="register" class="input__group">
                     <h2>Sign Up</h2>
                     <input type="text" name="username" class="input__field" placeholder="Username" required>
                     <input type="text" name="email" class="input__field" placeholder="Email" required>

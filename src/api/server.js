@@ -30,7 +30,7 @@ exp.use(bodyParser.raw())
 
 
 // A test route
-exp.post('/hello', (req, res) => {
+exp.post('/login', (req, res) => {
         connection.query("select * from register_user where Username = ? and UserPassword = ?", [req.body.username,req.body.password],  function (err, result, fields) {
             if(result.length > 0){
                 res.send({status: "true"});
