@@ -122,11 +122,7 @@ export default {
             <a class="btn-ask-question" href="#/question">
                 Ask a question
             </a>
-            </template>
-
-            <a class="btn btn-outline-dark" href="#/signin">
-                Vote
-            </a>       
+            </template>   
         </div>
 
         <div class="top-questions-container d-flex flex-column">
