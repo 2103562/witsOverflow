@@ -1,6 +1,75 @@
 <script>
+import axios from 'axios'
 export default {
-    name : 'Home'
+    name : 'Home',
+    data(){
+        return{
+            questions : [
+                {
+                    votes : 12,
+                    answers : 2,
+                    heading :'How to center a div',
+                    description : 'I am having a hard time centering a div using flexbox and css, the following code i have used is not helpful, vertical-align : center',
+                    time : '4 days ago',
+                    user : 'Jacob',
+                    tags : 'php,html,css',
+                    id : 1
+                },
+                {
+                    votes : 2,
+                    answers : 28,
+                    heading :'Hello world problem',
+                    description : 'The following print statement would print "hello world". Could anyone explain this?',
+                    time : '4 days ago',
+                    user : 'Jeffery',
+                    tags : 'php,html,css',
+                    id : 2
+                },
+                {
+                    votes : 32,
+                    answers : 344,
+                    heading :'yii module not working',
+                    description : 'I recently started to work with yii, where can i find the yii version of my yii app?',
+                    time : '4 days ago',
+                    user : 'Johnathan',
+                    tags : 'php,html,css',
+                    id : 3
+                }                
+            ]
+        }
+    },
+    methods:{
+       /* testCall(){
+            axios({
+                method: 'post',
+                url: 'http://localhost:4000/hello',
+                data: {
+                    username: '1234567',
+                    password: '1234567pass'
+                }
+                }).then(function (response) {
+                // handle success
+                console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                });
+        } */
+         testCall(){
+             axios.get('http://localhost:4000/questions')
+             .then(response =>{
+                 console.log(response.data['result'])
+                 this.questions = response.data['result']
+             })
+
+                
+        }
+
+    },
+    mounted(){
+        this.testCall()
+    }
 }
 </script>
 
@@ -10,85 +79,32 @@ export default {
 
             <div class="list-group">
 
-                <a href="#" class="list-group-item list-group-item-action d-flex flex-row">
+                <a v-for="question in questions" :key="question.id" class="list-group-item list-group-item-action d-flex flex-row">
                     <div class="buttons-container d-flex flex-column col-1">
                         <div class="votes-container">
-                                <p>12</p>
+                                <p>{{question.votes}}</p>
                                 <p>votes</p>
 
                         </div>
 
                         <div class="answers-container">
-                            <p>2</p>
+                            <p>{{question.answers}}</p>
                             <p>answers</p>
                             
                         </div>
                     </div>
 
                     <div class="d-flex d-flex flex-column col-9">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                        <h5 class="mb-1">{{question.heading}}</h5>
+                        <p class="mb-1">{{question.description}}</p>
+                        <p class="mb-1">{{question.tags}}</p>
                     </div>
 
                     <div class="d-flex flex-column col justify-content-between">
-                        <small>Donec id elit non mi porta.</small>
-                        <small>3 days ago</small>
-                    </div>
-                </a>
-
-                <a href="#" class="list-group-item list-group-item-action d-flex flex-row">
-                    <div class="buttons-container d-flex flex-column col-1">
-                        <div class="votes-container">
-                                <p>555</p>
-                                <p>votes</p>
-
-                        </div>
-
-                        <div class="answers-container">
-                            <p>23</p>
-                            <p>answers</p>
-                            
-                        </div>
+                        <small>{{question.user}}</small>
+                        <small>{{question.time}}</small>
                     </div>
 
-                    <div class="d-flex d-flex flex-column col-9">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    </div>
-
-                    <div class="d-flex flex-column col justify-content-between">
-                        <small>Donec id elit non mi porta.</small>
-                        <small>3 days ago</small>
-                    </div>
-                </a>
-                
-                <a href="#" class="list-group-item list-group-item-action d-flex flex-row">
-                    <div class="buttons-container d-flex flex-column col-1">
-                        <div class="votes-container">
-                                <p>99</p>
-                                <p>votes</p>
-
-                        </div>
-
-                        <div class="answers-container">
-                            <p>76</p>
-                            <p>answers</p>
-                            
-                        </div>
-                    </div>
-
-                    <div class="d-flex d-flex flex-column col-9">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    </div>
-
-                    <div class="d-flex flex-column col justify-content-between">
-                        <small>Donec id elit non mi porta.</small>
-                        <small>3 days ago</small>
-                    </div>
                 </a>
 
             </div>
@@ -101,7 +117,7 @@ export default {
             </a>
             <a class="btn btn-outline-dark" href="#/signin">
                 Vote
-            </a>
+            </a>       
         </div>
 
         <div class="top-questions-container d-flex flex-column">
@@ -109,85 +125,32 @@ export default {
 
             <div class="list-group">
 
-                <a href="#" class="list-group-item list-group-item-action d-flex flex-row">
+                <a v-for="question in questions" :key="question.id" class="list-group-item list-group-item-action d-flex flex-row">
                     <div class="buttons-container d-flex flex-column col-1">
                         <div class="votes-container">
-                                <p>12</p>
+                                <p>{{question.votes}}</p>
                                 <p>votes</p>
 
                         </div>
 
                         <div class="answers-container">
-                            <p>2</p>
+                            <p>{{question.answers}}</p>
                             <p>answers</p>
                             
                         </div>
                     </div>
 
                     <div class="d-flex d-flex flex-column col-9">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                        <h5 class="mb-1">{{question.heading}}</h5>
+                        <p class="mb-1">{{question.description}}</p>
+                        <p class="mb-1">{{question.tags}}</p>
                     </div>
 
                     <div class="d-flex flex-column col justify-content-between">
-                        <small>Donec id elit non mi porta.</small>
-                        <small>3 days ago</small>
-                    </div>
-                </a>
-
-                <a href="#" class="list-group-item list-group-item-action d-flex flex-row">
-                    <div class="buttons-container d-flex flex-column col-1">
-                        <div class="votes-container">
-                                <p>555</p>
-                                <p>votes</p>
-
-                        </div>
-
-                        <div class="answers-container">
-                            <p>23</p>
-                            <p>answers</p>
-                            
-                        </div>
+                        <small>{{question.user}}</small>
+                        <small>{{question.time}}</small>
                     </div>
 
-                    <div class="d-flex d-flex flex-column col-9">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    </div>
-
-                    <div class="d-flex flex-column col justify-content-between">
-                        <small>Donec id elit non mi porta.</small>
-                        <small>3 days ago</small>
-                    </div>
-                </a>
-                
-                <a href="#" class="list-group-item list-group-item-action d-flex flex-row">
-                    <div class="buttons-container d-flex flex-column col-1">
-                        <div class="votes-container">
-                                <p>99</p>
-                                <p>votes</p>
-
-                        </div>
-
-                        <div class="answers-container">
-                            <p>76</p>
-                            <p>answers</p>
-                            
-                        </div>
-                    </div>
-
-                    <div class="d-flex d-flex flex-column col-9">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    </div>
-
-                    <div class="d-flex flex-column col justify-content-between">
-                        <small>Donec id elit non mi porta.</small>
-                        <small>3 days ago</small>
-                    </div>
                 </a>
 
             </div>
