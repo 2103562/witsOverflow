@@ -2,20 +2,22 @@
 
 <script>
 
-
 export default {
     name: 'Account',
     data() {
         return {
             //regex for email validation
+
             reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
+            // item sets upload image default to null and user avater image 
             item: {
                 image: null,
-                imageUrl: null
+                imageUrl: "../assets/defaultDP.png"
             }
         }
     },
     methods: {
+        // on change upload function to change picture from files
         onChange(e) {
             const file = e.target.files[0]
             this.image = file
@@ -55,11 +57,11 @@ export default {
             }
 
             // can show errors to user on ui later
-             if(password.length <8 || password.length ==0){
-                  bValid = false;
-                 alert("Password must be at least 8 characters")
+            if (password.length < 8 || password.length == 0) {
+                bValid = false;
+                alert("Password must be at least 8 characters")
             }
-            if (password != confirm ) {
+            if (password != confirm) {
                 bValid = false;
                 alert("Passwords do not match")
             }
@@ -86,19 +88,13 @@ export default {
                 <h5 class="avatar-header">
                     Avatar
                 </h5>
-
-                <div id="preview" class="d-flex flex-row">
-
+                <div id="preview" class="img-container d-flex">
+                    <!-- upload button functionality -->
                     <img v-if="item.imageUrl" :src="item.imageUrl" class="user-avatar" />
-
                     <label class="upload-button">
                         <input id="browse" type="file" accept="image/*" style="hidden" @change="onChange" />
                         <i></i> Upload
                     </label>
-
-
-
-
                 </div>
 
             </div>
@@ -277,14 +273,11 @@ export default {
     text-decoration: none;
 }
 
+
+/* makes input file type on upload button invisible */
 input[type="file"] {
     display: none;
 }
 
-.uploaderbutton {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
-}
+
 </style>
