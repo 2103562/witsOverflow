@@ -7,7 +7,7 @@ export default {
 <template>
         <div class="account-container d-flex flex-column">
             <div class="row">
-                    <h2>Ask Question</h2>
+                    <h2>Ask Question!</h2>
             </div>
                 <div class="input-group">
                 <!-- title and question input -->
