@@ -37,11 +37,14 @@ export default {
              .then(response =>{
                  console.log(response.data['status'])
                  if (response.data['status'] == 'true'){
-                     this.$store.commit('logged',this.username)
+                    this.$store.commit('logged',this.username)
                     console.log(this.$store.state.signedIn)
+                    document.getElementById("account").click()
                  }
 
-             })
+             }).catch(error =>{
+                console.log(error);
+            });
         }
     }
 }
