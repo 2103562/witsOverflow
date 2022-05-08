@@ -114,10 +114,7 @@ export default {
         <div class="d-flex function-buttons-container">
             <a class="btn-ask-question" href="#/signin">
                 Ask a question
-            </a>
-            <a class="btn btn-outline-dark" href="#/signin">
-                Vote
-            </a>       
+            </a>    
         </div>
 
         <div class="top-questions-container d-flex flex-column">
