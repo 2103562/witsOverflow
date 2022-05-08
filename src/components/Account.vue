@@ -1,6 +1,61 @@
 <script>
 export default {
-    name : 'Account'
+    name: 'Account',
+    data() {
+        return {
+            //regex for email validation
+            reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+        }
+    },
+    methods: {
+        validate() {
+
+           
+
+            //extract values
+            var userName = String(document.getElementById("dname").value);
+            var email = String(document.getElementById("emailComp").value);
+            var password = String(document.getElementById("password").value);
+            var confirm = String(document.getElementById("confirm").value);
+            // var userNameValid = (document.getElementById("dname"));
+            // var emailValid = (document.getElementById("email"));
+            // var passwordValid = (document.getElementById("password"));
+            // var confirmValid = (document.getElementById("confirm"));
+
+
+
+            var bValid = true;
+
+            // validating phone numbers-> if needed in future
+            // if (!this..match('^[0-9]{10}$')) { bValid=false }
+        
+            var strRegex = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
+            console.log(email.match(strRegex))
+            if (!this.reg.test(email)) {
+                bValid = false;
+                alert("Invalid e-mail")
+               
+            }
+
+            if (userName.length > 15 || userName.length == 0) {
+                bValid = false;
+                alert("Invalid username length")
+            }
+
+            // can show errors to user on ui later
+            if (password != confirm || password.length == 0) {
+                bValid = false;
+                alert("Passwords do not match")
+            }
+            if (bValid) {
+                //add to DB later
+                alert("User details captured successfully")
+            } else {
+
+                return
+            }
+        },
+    },
 }
 </script>
 
@@ -14,98 +69,84 @@ export default {
                 <h5 class="avatar-header">
                     Avatar
                 </h5>
-                    
+
                 <div class="img-container d-flex">
 
                     <img class="user-avatar" src="../assets/defaultDP.png">
                     <a class="upload-button">Upload</a>
                     <a class="remove-button">Remove</a>
-        
+
                 </div>
-                    
+
             </div>
         </div>
+        <div id="invalidate">
+            <div class="row d-flex flex-row justify-content-between">
 
-        <div class="row d-flex flex-row justify-content-between">
+                <div class="form-group">
 
-            <div class="form-group">
+                    <label for="dname">Username:</label>
 
-                <label for="dname">Display Name:</label>
-                <input type="text" class="form-control" id="dname">
-            
+                    <!-- chage max lengtha ccordingly later -->
+                    <input maxlength="15" type="text" class="form-control" name="uname" id="dname" required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="emailComp">Email:</label>
+                    <!-- changed it ot an email field for validation purposes- but not supported by all browsera
+                    therefore extra validation is added in validate method -->
+                    <input type="email" class="form-control" name="email" id="emailComp" required>
+
+                </div>
+
             </div>
 
-            <div class="form-group">
+            <div class="row justify-content-between">
 
-                <label for="name">Full Name:</label>
-                <input type="password" class="form-control" id="name">
+                <div class="form-group">
+
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="confirm">Confirm password:</label>
+                    <input type="password" class="form-control" name="confirm" id="confirm" required>
+
+                </div>
+
 
             </div>
-            
         </div>
-
-        <div class="row d-flex flex-row justify-content-between">
-
-            <div class="form-group">
-
-                <label for="email">Email:</label>
-                <input type="text" class="form-control" id="email">
-            
-            </div>
-
-            <div class="form-group">
-
-                <label for="phone">Phone number:</label>
-                <input type="text" class="form-control" id="phone">
-
-            </div>
-
-            
-        </div>
-
-        <div class="row d-flex flex-row justify-content-between">
-
-            <div class="form-group">
-
-                <label for="password">Password:</label>
-                <input type="text" class="form-control" id="password">
-            
-            </div>
-
-            <div class="form-group">
-
-                <label for="confirm">Confirm password:</label>
-                <input type="text" class="form-control" id="confirm">
-
-            </div>
-
-            
-        </div>
-
         <div class="row d-flex">
 
             <p> <strong>Delete account</strong> </p>
             <div class="d-flex justify-content-between delete-account">
                 <p>By deleting your account you will lose all your data</p>
-                <a href="#">Delete account...</a>
+                <a href="#">Delete account</a>
+                <a class="delete-btn" href="#">Delete</a>
             </div>
 
         </div>
 
         <div class="row d-flex justify-content-between">
 
-            <a class="custom-btn" href="index.html">Back</a>
-
-            <a class="custom-btn">Save changes</a>
+            <a @click="validate" class="custom-btn">Save changes</a>
 
         </div>
+
 
     </div>
 
 </template>
 
+
 <style scoped>
-.account-container{
+.account-container {
     width: 75%;
     border-radius: 15px;
     box-shadow: 0px 0px 14px -5px rgba(76, 75, 75, 0.75);
@@ -115,41 +156,42 @@ export default {
 
 }
 
-.account-container .row:not(:first-child), .account-container .row:not(:last-child){
+.account-container .row:not(:first-child),
+.account-container .row:not(:last-child) {
     margin-bottom: 20px;
     padding-bottom: 25px;
     border-bottom: 1px solid rgb(211, 211, 211);
-    
+
 }
 
-.account-container .row:last-child{
+.account-container .row:last-child {
     border-bottom: none;
 }
 
-.account-container .row:first-child{
+.account-container .row:first-child {
     margin-bottom: 15px;
 }
 
-.form-group label{
+.form-group label {
     margin-bottom: 8px;
 }
 
 
-.form-group{
+.form-group {
     width: 440px;
 }
 
-.delete-account a{
+.delete-account a {
     text-decoration: none;
     color: var(--bs-body-color);
 }
 
 
-.avatar-header{
+.avatar-header {
     margin-top: 30px;
 }
 
-.user-avatar{
+.user-avatar {
     width: 85px;
     height: 85px;
     border: 1px rgb(201, 204, 207) solid;
@@ -157,17 +199,18 @@ export default {
     padding: 3px;
 }
 
-.img-container{
+.img-container {
     align-items: center;
 }
 
-.img-container a{
+.img-container a {
     margin-left: 25px;
     transition: .2s;
 
 }
 
-.upload-button, .remove-button{
+.upload-button,
+.remove-button {
     border: 1px solid #ced4da;
     width: 100px;
     height: 40px;
@@ -179,18 +222,31 @@ export default {
     border-radius: 4px;
 }
 
-.img-container a:hover{
+.img-container a:hover {
     border: 1px solid #0d6efd;
     background: #0d6efd;
     color: white;
 }
 
-.custom-btn{
+.custom-btn {
     width: 160px;
     height: 45px;
     color: white;
     font-weight: 700;
     background: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.delete-btn {
+    width: 160px;
+    height: 45px;
+    color: white;
+    font-weight: 700;
+    background: #af0000;
     display: flex;
     align-items: center;
     justify-content: center;
