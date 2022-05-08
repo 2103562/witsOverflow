@@ -4,10 +4,22 @@ export default {
     data() {
         return {
             //regex for email validation
-            reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+            
+        reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
+            // item sets upload image default to null and user avater image 
+             item:{
+       image : null,
+          imageUrl: "../assets/defaultDP.png"
+             }
         }
     },
     methods: {
+        // on change upload function to change picture from files
+            onChange(e) {
+      const file = e.target.files[0]
+      this.image = file
+      this.item.imageUrl = URL.createObjectURL(file)
+            },
         validate() {
 
            
@@ -69,15 +81,14 @@ export default {
                 <h5 class="avatar-header">
                     Avatar
                 </h5>
-
-                <div class="img-container d-flex">
-
-                    <img class="user-avatar" src="../assets/defaultDP.png">
-                    <a class="upload-button">Upload</a>
-                    <a class="remove-button">Remove</a>
-
-                </div>
-
+                <div id="preview" class="d-flex flex-row">
+     <!-- upload button functionality -->
+    <img v-if="item.imageUrl" :src="item.imageUrl" class="user-avatar" />
+        <label class="upload-button">
+     <input id="browse" type = "file" accept="image/*" style="hidden" @change="onChange" />
+      <i ></i> Upload
+     </label>
+       </div>
             </div>
         </div>
         <div id="invalidate">
@@ -253,4 +264,8 @@ export default {
     border-radius: 6px;
     text-decoration: none;
 }
+/* makes input file type on upload button invisible */
+input[type="file"] {
+        display: none;
+    }
 </style>
