@@ -1,16 +1,29 @@
+
+
 <script>
+
+
 export default {
     name: 'Account',
     data() {
         return {
             //regex for email validation
-            reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+            reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
+            item: {
+                image: null,
+                imageUrl: null
+            }
         }
     },
     methods: {
+        onChange(e) {
+            const file = e.target.files[0]
+            this.image = file
+            this.item.imageUrl = URL.createObjectURL(file)
+        },
         validate() {
 
-           
+
 
             //extract values
             var userName = String(document.getElementById("dname").value);
@@ -28,13 +41,12 @@ export default {
 
             // validating phone numbers-> if needed in future
             // if (!this..match('^[0-9]{10}$')) { bValid=false }
-        
+
             var strRegex = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
             console.log(email.match(strRegex))
             if (!this.reg.test(email)) {
                 bValid = false;
                 alert("Invalid e-mail")
-               
             }
 
             if (userName.length > 15 || userName.length == 0) {
@@ -43,10 +55,15 @@ export default {
             }
 
             // can show errors to user on ui later
-            if (password != confirm || password.length == 0) {
+             if(password.length <8 || password.length ==0){
+                  bValid = false;
+                 alert("Password must be at least 8 characters")
+            }
+            if (password != confirm ) {
                 bValid = false;
                 alert("Passwords do not match")
             }
+
             if (bValid) {
                 //add to DB later
                 alert("User details captured successfully")
@@ -70,11 +87,17 @@ export default {
                     Avatar
                 </h5>
 
-                <div class="img-container d-flex">
+                <div id="preview" class="d-flex flex-row">
 
-                    <img class="user-avatar" src="../assets/defaultDP.png">
-                    <a class="upload-button">Upload</a>
-                    <a class="remove-button">Remove</a>
+                    <img v-if="item.imageUrl" :src="item.imageUrl" class="user-avatar" />
+
+                    <label class="upload-button">
+                        <input id="browse" type="file" accept="image/*" style="hidden" @change="onChange" />
+                        <i></i> Upload
+                    </label>
+
+
+
 
                 </div>
 
@@ -252,5 +275,16 @@ export default {
     justify-content: center;
     border-radius: 6px;
     text-decoration: none;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.uploaderbutton {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
 }
 </style>
