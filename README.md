@@ -42,4 +42,4 @@ An online forum that allows users to ask, answer, vote, mark and moderate questi
 
 [![Build Status](https://circleci.com/gh/2103562/witsOverflow.svg?branch=Test/staging)](https://app.circleci.com/pipelines/github/2103562)
 
-[![Coverage Status](https://coveralls.io/repos/github/2103562/witsOverflow/badge.svg?branch=Test/staging)](https://coveralls.io/github/2103562/witsOverflow?branch=Test/staging)
+[![codecov](https://codecov.io/gh/2103562/witsOverflow/branch/main/graph/badge.svg?token=T91O48LI91)](https://codecov.io/gh/2103562/witsOverflow)
