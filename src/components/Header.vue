@@ -20,9 +20,8 @@ export default {
         <div class="navbar-nav d-flex flex-row">
             <a class="nav-item nav-link active" href="#/">Home</a>
    
-            <template v-if="state == false">
-            <a class="nav-item nav-link active" href="#/account">Account</a>
-
+            <template v-if="this.$store.state.signedIn == false">
+            <a id="account" class="nav-item nav-link disabled" href="#/account">Account</a>
             <a class="btn btn-outline-primary btn-login" href="#/signin">Log in</a>
             <a class="btn btn-outline-primary btn-signup" href="#/signin">Sign up</a>
             </template>
