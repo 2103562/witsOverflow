@@ -13,9 +13,9 @@ const store = createStore({
       }
     },
     mutations: {
-      logged (state) {
+      logged (state,name) {
         state.signedIn = true
-        state.username = "Jeff"
+        state.username = name
       }
     }
   })
@@ -23,4 +23,5 @@ const store = createStore({
 const app = createApp(App)
 
 app.use(store)
+
 app.mount('#app')
