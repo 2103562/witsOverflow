@@ -112,9 +112,18 @@ export default {
         </div>
 
         <div class="d-flex function-buttons-container">
+            <template v-if="this.$store.state.signedIn == false">
+            <a class="btn-ask-question" href="#/signin">
+                Ask a question
+            </a>
+            </template>
+
+            <template v-else>
             <a class="btn-ask-question" href="#/question">
                 Ask a question
             </a>
+            </template>
+
             <a class="btn btn-outline-dark" href="#/signin">
                 Vote
             </a>       
