@@ -239,6 +239,7 @@ export default {
     text-decoration: none;
     font-weight: 600;
     border-radius: 4px;
+    margin-left: 20px;
 }
 
 .img-container a:hover {
