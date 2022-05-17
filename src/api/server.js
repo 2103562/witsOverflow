@@ -8,14 +8,14 @@ const mysql = require('mysql');
 const bodyParser = require("body-parser"); 
 
 //cors
-const cors = require('cors')
+const cors = require('cors');
 
 //create connection
 const connection = mysql.createConnection({
-    host: "eu-cdbr-west-02.cleardb.net",
-    user: "b485d7053c318c",
-    password: "8dcd5143",
-    database: "heroku_9c5fd54c0bf4617"
+    host: "us-cdbr-east-05.cleardb.net",
+    user: "b4129b27e9a1e2",
+    password: "87009bd8",
+    database: "heroku_45ea15f427c56e8"
 });
 
 // Create Express app
@@ -29,7 +29,7 @@ exp.use(bodyParser.json())
 exp.use(bodyParser.raw())
 
 
-// A test route
+// User login route
 exp.post('/login', (req, res) => {
         connection.query("select * from register_user where Username = ? and UserPassword = ?", [req.body.username,req.body.password],  function (err, result, fields) {
             if(result){
@@ -43,7 +43,7 @@ exp.post('/login', (req, res) => {
 // questions
 exp.get('/questions', (req, res) => {
     connection.query("select * from tbl_question", function (err, result, fields) {
-        if(result.length > 0){
+        if(result){
             res.send({
                 result: result,
                 status: "true"
