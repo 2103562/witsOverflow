@@ -1,11 +1,20 @@
 <script>
-import axios from 'axios'
+import { registerRuntimeHelpers } from '@vue/compiler-core';
+import axios from 'axios';
+
 export default {
     name : 'Signin',
     data(){
         return{
             username : '',
-            password : ''
+            password : '',
+            USERNAME : '',
+            EMAIL : '',
+            PASSWORD : '',
+            CONFIRMPASSWORD : '',
+             //regex for email validation
+            reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
+            //moderatorCheckbox: false
         }
     },
     methods : {
@@ -34,18 +43,74 @@ export default {
                  username : this.username,
                  password : this.password
              })
-             .then(response =>{
+             .then(response => {
                  console.log(response.data['status'])
                  if (response.data['status'] == 'true'){
                     this.$store.commit('logged',this.username)
                     console.log(this.$store.state.signedIn)
-                    document.getElementById("account").click()
-                 }
-
+                    document.getElementById("account").click();
+                }
              }).catch(error =>{
                 console.log(error);
             });
+        },
+
+        registerCall : function() {
+            //validation
+            var USERNAME = String(document.getElementById("USERNAME").value);
+            var EMAIL = String(document.getElementById("EMAIL").value);
+            var PASSWORD = String(document.getElementById("PASSWORD").value);
+            var CONFIRMPASSWORD = String(document.getElementById("CONFIRMPASSWORD").value);
+            var bValid = true;
+
+            var strRegex = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
+            console.log(EMAIL.match(strRegex))
+            if (!this.reg.test(EMAIL)) {
+                bValid = false;
+                alert("Invalid e-mail")
+            }
+
+            if (PASSWORD != CONFIRMPASSWORD) {
+                bValid = false;
+                alert("Passwords do not match")
+            }
+
+            //validation complete (using above and in html below)
+            if (bValid == true) {
+                alert("boolean true"); //this works
+                //using the server.js file
+                axios.post('http://localhost:4000/register', {
+                    //get values from form input
+                    USERNAME : this.USERNAME,
+                    EMAIL : this.EMAIL,
+                    PASSWORD : this.PASSWORD,
+                    CONFIRMPASSWORD : this.CONFIRMPASSWORD
+                })
+                .then(response => {
+                    console.log(response.data['status'])
+                    if (response.data['status'] == 'pass'){
+                        //track if a user already signed in?
+                        this.$store.commit('logged',this.USERNAME)
+                        console.log(this.$store.state.signedIn)
+                        //registration successful
+                        alert('Registration successful!') //ONLY WORKS SOMETIMES????
+                        //redirect to account page
+                        document.getElementById("account").click(); //ONLY WORKS SOMETIMES????
+                    }
+                    else{
+                        alert('Username already exists') //ONLY WORKS SOMETIMES????
+                    }
+                })
+                .catch(function(error){
+                    console.log(error.response.data);
+                    alert("Error, please try again.") 
+                });
+            } else {
+                return
+            }
+
         }
+
     }
 }
 
@@ -66,8 +131,8 @@ export default {
 
                 <form id="login" class="input__group">
                     <h2>Login</h2>
-                        <input v-model="username" type="text" name="Username" class="input__field" placeholder="Username" required>
-                        <input v-model="password" type="text" name="UserPassword" class="input__field" placeholder="Password" minlength=8 required>
+                        <input v-model="username" type="text"  class="input__field" placeholder="Username" required>
+                        <input v-model="password" type="text"  class="input__field" placeholder="Password" required>
                         <input type="checkbox" class="check__box"><span>Remember Password</span>
                         <button @click="loginCall" type="submit" class="submitBtn">Log In</button>   
                         
@@ -75,17 +140,15 @@ export default {
                 
                 <form id="register" class="input__group">
                     <h2>Sign Up</h2>
-                    <input type="text" name="username" class="input__field" placeholder="Username" required>
-                    <input type="text" name="email" class="input__field" placeholder="Email" required>
-                    <input type="text" name="password" class="input__field" placeholder="Password" required>
-                    <input type="text" class="input__field" placeholder="Confirm Password" required>
-                    <input type="checkbox" class="check__box"><span>Sign up as a moderator</span>
-                    <button type="submit" class="submitBtn">Sign Up</button>
+                    <input id="USERNAME" v-model="USERNAME" type="text"  class="input__field" placeholder="Username" maxlength="15" required>
+                    <input id="EMAIL" v-model="EMAIL" type="text"  class="input__field" placeholder="Email" required>
+                    <input id="PASSWORD" v-model="PASSWORD" type="text"  class="input__field" placeholder="Password" required minlength="8">
+                    <input id="CONFIRMPASSWORD" v-model="CONFIRMPASSWORD"  type="text" class="input__field" placeholder="Confirm Password" required minlength="8">
+                    <input type="checkbox" v-model="moderatorCheckbox" class="check__box"><span>Sign up as a moderator</span>
+                    <button @click="registerCall" class="submitBtn">Sign Up</button>
                 </form>
             </div>
-        </div>
-        
-            
+        </div>    
 </template>
 
 <style scoped>
@@ -93,7 +156,7 @@ export default {
 .hero {
     height: 100%;
     width: 100%;
-    background-image: linear-gradient(rgba(5, 51, 97, 0.4),rgba(6, 26, 86, 0.4)),url(GreatHallWits.jpg);
+    /*background-image: linear-gradient(rgba(5, 51, 97, 0.4),rgba(6, 26, 86, 0.4)),url(GreatHallWits.jpg);*/
     background-position: center;
     background-size: cover;
     position: absolute;
