@@ -103,6 +103,7 @@ export default {
                     <div class="d-flex flex-column col justify-content-between">
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
+                        <a class="btn-upvote" @click="question.votes++">Upvote</a>
                     </div>
 
                 </a>
