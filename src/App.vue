@@ -5,13 +5,12 @@ import Home from './components/Home.vue'
 import Signin from './components/Signin.vue'
 import QuestionsTable from './components/QuestionsTable.vue'
 
-
 const routes = {
   '/': Home,
   '/account': Account,
   '/signin': Signin,
   '/signup': Signin,
-  '/questions-list' : QuestionsTable
+  '/questions': QuestionsTable
 }
 
 export default{
@@ -20,9 +19,8 @@ export default{
     Header,
     Home,
     Account,
-    
-
-
+    Signin,
+    QuestionsTable
   },
   data() {
     return {
