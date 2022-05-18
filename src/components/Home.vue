@@ -4,8 +4,10 @@ export default {
     name : 'Home',
     data(){
         return{
+            voter:0,
+          
             questions : [
-                {
+                {   voteid:0,
                     votes : 12,
                     answers : 2,
                     heading :'How to center a div',
@@ -15,7 +17,7 @@ export default {
                     tags : 'php,html,css',
                     id : 1
                 },
-                {
+                {   voteid:1,
                     votes : 2,
                     answers : 28,
                     heading :'Hello world problem',
@@ -26,6 +28,7 @@ export default {
                     id : 2
                 },
                 {
+                    voteid:2,
                     votes : 32,
                     answers : 344,
                     heading :'yii module not working',
@@ -34,8 +37,11 @@ export default {
                     user : 'Johnathan',
                     tags : 'php,html,css',
                     id : 3
-                }                
-            ]
+                },
+                            
+            ],
+           
+            
         }
     },
     methods:{
@@ -64,8 +70,15 @@ export default {
              })
 
                 
-        }
+        },
+     
+          
+       
+        
 
+    },
+    compute:{
+      
     },
     mounted(){
         this.testCall()
@@ -82,7 +95,7 @@ export default {
                 <a v-for="question in questions" :key="question.id" class="list-group-item list-group-item-action d-flex flex-row">
                     <div class="buttons-container d-flex flex-column col-1">
                         <div class="votes-container">
-                                <p>{{question.votes}}</p>
+                                <p>{{voter}}</p>
                                 <p>votes</p>
 
                         </div>
@@ -103,6 +116,13 @@ export default {
                     <div class="d-flex flex-column col justify-content-between">
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
+                        
+                      
+                              <button @click="voter++">Upvote</button>
+                       
+                            
+                        
+                        
                     </div>
 
                 </a>
@@ -127,6 +147,8 @@ export default {
                         <div class="votes-container">
                                 <p>{{question.votes}}</p>
                                 <p>votes</p>
+                                
+                                
 
                         </div>
 
