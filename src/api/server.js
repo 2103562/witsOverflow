@@ -42,6 +42,20 @@ exp.post('/login', (req, res) => {
 
 // questions to display on homepage
 exp.get('/questions', (req, res) => {
+    connection.query("select * from tbl_question limit 3", function (err, result, fields) {
+        if(result){
+            res.send({
+                result: result,
+                status: "true"
+        });
+        } else{
+            res.send({status:"false"})
+        }
+    });
+})
+
+// questions to display on question page
+exp.get('/questions/all', (req, res) => {
     connection.query("select * from tbl_question", function (err, result, fields) {
         if(result){
             res.send({
