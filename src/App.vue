@@ -17,7 +17,7 @@ export default{
     Header,
     Home,
     Account,
-
+    Signin
 
   },
   data() {
