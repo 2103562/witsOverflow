@@ -64,6 +64,11 @@ export default {
              })
 
                 
+        },
+        downvote(thequestion){
+            if(thequestion>=1){
+                thequestion--
+            }
         }
 
     },
@@ -100,10 +105,13 @@ export default {
                         <p class="mb-1">{{question.tags}}</p>
                     </div>
 
-                    <div class="d-flex flex-column col justify-content-between">
+                    <div class="d-flex flex-row row justify-content-between">
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
+                        <div class="d-flex flex-row row justify-content-between" >
                         <a class="btn-upvote" @click="question.votes++">Upvote</a>
+                        <a class="btn-upvote" v-if="question.votes>=1" @click=question.votes-->DownVote</a>
+                        </div>
                     </div>
 
                 </a>
@@ -144,10 +152,13 @@ export default {
                         <p class="mb-1">{{question.tags}}</p>
                     </div>
 
-                    <div class="d-flex flex-column col justify-content-between">
+                    <div class="d-flex flex-row row justify-content-between">
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
-                        <a class="btn-upvote"> Upvote </a>
+                        <div class="d-flex flex-row row justify-content-between">
+                       <a class="btn-upvote" @click="question.votes++">Upvote</a>
+                        <a class="btn-upvote" v-if="question.votes>=1" @click=question.votes-->Downvote</a>
+                        </div>
 
                     </div>
 
