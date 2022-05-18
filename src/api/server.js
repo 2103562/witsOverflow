@@ -82,5 +82,13 @@ exp.post('/register', (req, res) => {
     });
 })
 
+//display table list of questions
+
+  exp.get('/QuestionsTable', function(req, res, next) {
+      connection.query('SELECT heading , description , time , user_id from questions_table', function (err, result, fields) {
+      if (err) throw err;
+      res.render('QuestionsTable', { title: 'User List', userData: result});
+    });
+  });
 // Start the Express server
 exp.listen(4000, () => console.log('Server running on port 4000!'))

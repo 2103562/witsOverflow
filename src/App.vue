@@ -3,12 +3,15 @@ import Header from './components/Header.vue'
 import Account from './components/Account.vue'
 import Home from './components/Home.vue'
 import Signin from './components/Signin.vue'
+import QuestionsTable from './components/QuestionsTable.vue'
+
 
 const routes = {
   '/': Home,
   '/account': Account,
   '/signin': Signin,
   '/signup': Signin,
+  '/questions-list' : QuestionsTable
 }
 
 export default{
@@ -17,6 +20,7 @@ export default{
     Header,
     Home,
     Account,
+    
 
 
   },
