@@ -47,10 +47,7 @@ export default {
                     this.$store.commit('logged',this.username)
                     console.log(this.$store.state.signedIn)
                     document.getElementById("account").click()
-                } else{
-                    alert("Login unsuccessful");
-                }
-
+                } 
              }).catch(error =>{
                 console.log(error);
             });

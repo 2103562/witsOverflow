@@ -29,15 +29,18 @@ exp.use(bodyParser.raw())
 
 //login with hashed password
 exp.post('/login', (req, res) => {
-    connection.query("select UserPassword from registered_user where Username = ?", [req.body.username], function (err, results, fields) {
+    if(req.body.username != '' && req.body.password != ''){
+        connection.query("select UserPassword from registered_user where Username = ?", [req.body.username], function (err, results, fields) {
         const isValid = bcrypt.compare(req.body.password, String(results[0]));
-        if(isValid){
+        if(results.length > 0 && isValid){
             res.send({status: "true"});
             //res.end();
         } else{
             res.send({status:"false"})
         }
     });
+    }
+    
 })
 
 // questions to display on homepage
