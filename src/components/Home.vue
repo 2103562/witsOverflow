@@ -179,6 +179,21 @@ export default {
     align-items: center;
 }
 
+.btn-upvote{
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    width: 90px;
+    height: 45px;
+    padding: 7px;
+    background: #0d6efd;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
 .votes-container{
     display: flex;
     flex-direction: column;
@@ -229,7 +244,7 @@ export default {
     padding: 7px;
 }
 
-.btn-ask-question{
+.btn-ask-question, .btn-upvote{
     background: #0d6efd;
     color: white;
 }
