@@ -22,16 +22,16 @@ export default {
 
             <template v-if="this.$store.state.signedIn == false">
             <a id="account" class="nav-item nav-link disabled" href="#/account">Account</a>
+            <a class="nav-item nav-link" href="#/questions"> View all questions</a>
             <a class="btn btn-outline-primary btn-login" href="#/signin">Log in</a>
             <a class="btn btn-outline-primary btn-signup" href="#/signin">Sign up</a>
-            <a class="btn btn-outline-primary btn-questions-list" href="#/questions-list"> View ALL Questions</a>
             </template>
 
             <template v-else>
             <a class="nav-item nav-link" href="#/account">Account</a>
+            <a class="nav-item nav-link" href="#/questions"> View all questions</a>
             <a class="btn btn-outline-primary btn-login disabled" href="#/signin">Log in</a>
             <a class="btn btn-outline-primary btn-signup disabled" href="#/signin">Sign up</a>
-            <a class="btn btn-outline-primary btn-questions-list" href="#/questions-list"> View ALL Questions</a>
             </template>
 
 
