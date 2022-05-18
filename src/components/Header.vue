@@ -13,8 +13,6 @@ export default {
 <template>
     <nav class="navbar navbar-light bg-light d-flex justify-content-between p-3 shadow-sm">
     <div class="d-flex p-1">
-
-        <a class="fa fa-navicon"></a>
         
         <a class="navbar-brand">{{title}}</a>
 
@@ -81,7 +79,8 @@ a.btn-login:hover, a.btn-signup:hover{
 }
 
 .navbar-brand{
-    margin-right: 40px;
+    margin-left: 20px;
+    margin-right: 60px;
     font-weight: 700;
 }
 
@@ -89,12 +88,5 @@ a.btn-login:hover, a.btn-signup:hover{
     color: #007bff !important;
 }
 
-.fa.fa-navicon{
-    margin-right: 40px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: gray;
-}
 
 </style>
