@@ -39,6 +39,20 @@ exp.post('/login', (req, res) => {
         }
     });
 })
+//answer questions
+exp.post('/answer', (req, res) => {
+    connection.query("select * from answers_table where answer = ? and question = ?", [req.body.answer_given],  function (err, result, fields) {
+        if(1 == 1){
+
+            database.execute(
+            'INSERT INTO answers_table (answer) VALUES (@answer_given)',
+            {
+                answer_given: req.body.answer_given,
+            });
+            res.send({status: "pass"}); //answer sent successfully
+        }
+    });
+})
 
 // questions to display on homepage
 exp.get('/questions', (req, res) => {
