@@ -4,6 +4,10 @@ export default {
   name: "Account",
   data() {
     return {
+      dname : '',
+      password : '',
+      confirm : '',
+
       //regex for email validation
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
       // item sets upload image default to null and user avater image
@@ -14,16 +18,58 @@ export default {
     };
   },
   methods: {
+
+    updateCall(){ //Zahraah
+      var passField = String(document.getElementById("password").value);
+      var confirmField = String(document.getElementById("confirm").value);
+      var dnameField = String(document.getElementById("dname").value);
+      var bValid1 = true;
+
+      if(passField == "" || confirmField == ""){ 
+        bValid1 = false;
+        alert("Please fill in all fields");
+      }
+      else{
+        if (passField == '' || confirmField == '' || passField != confirmField) {
+          bValid1 = false;
+          alert("Passwords do not match")
+        }
+
+        //validation complete
+        if(bValid1 == true){
+          alert("validation complete")
+          axios.post("http://localhost:4000/updatepassword",{
+            dname : this.dname,
+            password : this.password,
+            confirm : this.confirm
+          })
+          .then(response => {
+            console.log(response.data['status'])
+            if(response.data['status'] == 'true'){
+              alert("Password successfully updated");
+            } else {
+              alert("Update unsuccessful");
+            }
+          })
+          .catch(error =>{
+            console.log(error.response.data);
+            alert("Error, please try again.")
+          });
+        }
+      }
+    },
+
     //get user data from database
     getUserData() {
       var userObject;
-      var usernameField = document.getElementById("dname");
+      //var usernameField = document.getElementById("dname");
+      var usernameField = this.$store.state.username;
       var emailField = document.getElementById("emailComp");
       var passField = document.getElementById("password");
       var confirmField = document.getElementById("confirm");
       axios
         .post("http://localhost:4000/account/get", {
-          userId: 4,
+          dname: this.usernameField,
         })
         .then((response) => {
           userObject = response.data["result"];
@@ -31,7 +77,7 @@ export default {
           usernameField.setAttribute("value", userObject[0].Username);
           emailField.setAttribute("value", userObject[0].Email);
           passField.setAttribute("value", userObject[0].Password);
-          confirmField.setAttribute("value", userObject[0].Password);
+          confirmField.setAttribute("value", userObject[3].Password);
         })
         .catch((error) => {
           console.log(error);
@@ -39,7 +85,7 @@ export default {
     },
 
     // send new username and email to database
-    setUserData(username, password) {
+    /*setUserData(username, password) {
       axios
         .post("http://localhost:4000/account/set2", {
           USERNAME: username,
@@ -49,7 +95,7 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    },
+    },*/
 
     deleteUser() {},
 
@@ -113,7 +159,10 @@ export default {
       }
     },
   }, // end of methods
+
   mounted() {
+    var usernameField = document.getElementById("dname");
+    usernameField.setAttribute("value", this.$store.state.username);
     this.getUserData();
   },
 };
@@ -153,7 +202,7 @@ export default {
             class="form-control"
             name="uname"
             id="dname"
-            required
+            readonly="true"
           />
         </div>
 
@@ -205,7 +254,7 @@ export default {
     </div>
 
     <div class="row d-flex justify-content-between">
-      <a @click="validate" class="custom-btn">Save changes</a>
+      <button @click="updateCall" class="custom-btn">Save changes</button>
     </div>
   </div>
 </template>

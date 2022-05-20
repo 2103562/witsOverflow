@@ -1,121 +1,116 @@
 <script>
 import axios from 'axios'
+
 export default {
-    name : 'Signin',
-    data(){
-        return{
-            username : '',
-            password : '',
-            USERNAME : '',
-            EMAIL : '',
-            PASSWORD : '',
-            CONFIRMPASSWORD : '',
-             //regex for email validation
+    name: "Signin",
+    data() {
+        return {
+            //login
+            username: "",
+            password: "",
+            //register
+            USERNAME: "",
+            EMAIL: "",
+            PASSWORD: "",
+            CONFIRMPASSWORD: "",
+            //regex for email validation
             reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
             //moderatorCheckbox: false
-        }
+        };
     },
-    methods : {
-        loginMove : function(){
+    methods: {
+        loginMove: function () {
             var x = document.getElementById("login");
             var y = document.getElementById("register");
             var z = document.getElementById("btn");
-
             x.style.left = "50px";
             y.style.left = "450px";
             z.style.left = "0";
         },
-
-        registerMove : function(){
+        registerMove: function () {
             var x = document.getElementById("login");
             var y = document.getElementById("register");
             var z = document.getElementById("btn");
-
             x.style.left = "-400px";
             y.style.left = "50px";
             z.style.left = "110px";
         },
-
-        loginCall(){
-             axios.post('http://localhost:4000/login',{
-                 username : this.username,
-                 password : this.password
-             })
-             .then(response =>{
-                console.log(response.data['status'])
-                if (response.data['status'] == 'true'){
+        loginCall() {
+            axios.post("http://localhost:4000/login", {
+                username: this.username,
+                password: this.password
+            })
+                .then(response => {
+                console.log(response.data["status"]);
+                if (response.data["status"] == "true") {
                     this.$store.commit('logged',this.username)
+                    this.$store.commit('setId',response.data['userId'])
                     console.log(this.$store.state.signedIn)
+                    console.log(this.$store.state.username)
+                    console.log(this.$store.state.userId)
                     document.getElementById("account").click()
-                } 
-             }).catch(error =>{
+                }
+            }).catch(error => {
                 console.log(error);
             });
         },
-
-        registerCall : function() {
+        registerCall: function () {
             //validation
             var USERNAME = String(document.getElementById("USERNAME").value);
             var EMAIL = String(document.getElementById("EMAIL").value);
             var PASSWORD = String(document.getElementById("PASSWORD").value);
             var CONFIRMPASSWORD = String(document.getElementById("CONFIRMPASSWORD").value);
             var bValid = true;
-
-            if(USERNAME == '' || EMAIL == '' || CONFIRMPASSWORD == '' || PASSWORD == ''){
+            if (USERNAME == "" || EMAIL == "" || CONFIRMPASSWORD == "" || PASSWORD == "") {
                 bValid = false;
                 alert("Please fill in all fields");
             }
-            else{
-                var strRegex = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
-                console.log(EMAIL.match(strRegex))
+            else {
+                var strRegex = new RegExp("^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$");
+                console.log(EMAIL.match(strRegex));
                 if (!this.reg.test(EMAIL)) {
                     bValid = false;
-                    alert("Invalid e-mail")
+                    alert("Invalid e-mail");
                 }
-
-                if (PASSWORD == '' || CONFIRMPASSWORD == '' || PASSWORD != CONFIRMPASSWORD) {
+                if (PASSWORD == "" || CONFIRMPASSWORD == "" || PASSWORD != CONFIRMPASSWORD) {
                     bValid = false;
-                    alert("Passwords do not match")
+                    alert("Passwords do not match");
                 }
-
                 //validation complete (using above and in html below)
                 if (bValid == true) {
                     //using the server.js file
-                    axios.post('http://localhost:4000/register', {
+                    axios.post("http://localhost:4000/register", {
                         //get values from form input
-                        USERNAME : this.USERNAME,
-                        EMAIL : this.EMAIL,
-                        PASSWORD : this.PASSWORD,
-                        CONFIRMPASSWORD : this.CONFIRMPASSWORD
+                        USERNAME: this.USERNAME,
+                        EMAIL: this.EMAIL,
+                        PASSWORD: this.PASSWORD,
+                        CONFIRMPASSWORD: this.CONFIRMPASSWORD
                     })
-                    .then(response => {
-                        console.log(response.data['status'])
-                        if (response.data['status'] == 'pass'){
+                        .then(response => {
+                        console.log(response.data["status"]);
+                        if (response.data["status"] == "pass") {
                             //track if a user already signed in?
-                            this.$store.commit('logged',this.USERNAME)
-                            console.log(this.$store.state.signedIn)
+                            this.$store.commit("logged", this.USERNAME);
+                            console.log(this.$store.state.signedIn);
                             //registration successful
-                            alert('Registration successful!') 
+                            alert("Registration successful!");
                             //redirect to account page
-                            document.getElementById("account").click(); 
+                            document.getElementById("account").click();
                         }
-                        else{
-                            alert('Username already exists') //DOESN'T REINSERT DATA BUT ALERT ONLY SHOWS SOMETIMES????
+                        else {
+                            alert("Username already exists"); //DOESN'T REINSERT DATA BUT ALERT ONLY SHOWS SOMETIMES????
                         }
                     })
-                    .catch(function(error){
+                        .catch(function (error) {
                         console.log(error.response.data);
-                        alert("Error, please try again.")
+                        alert("Error, please try again.");
                     });
-                } else {
-                    return
+                }
+                else {
+                    return;
                 }
             }
-
-            
-
         }
-
     }
 }
 
@@ -154,7 +149,6 @@ export default {
                 </form>
             </div>
         </div>
-        
             
 </template>
 

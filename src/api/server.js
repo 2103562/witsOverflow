@@ -30,19 +30,15 @@ exp.use(bodyParser.raw());
 //login with hashed password
 exp.post("/login", (req, res) => {
   if (req.body.username != "" && req.body.password != "") {
-    connection.query(
-      "select UserPassword from registered_user where Username = ?",
-      [req.body.username],
-      function (err, results, fields) {
-        const isValid = bcrypt.compare(req.body.password, String(results[0]));
-        if (results != 0 && isValid) {
-          res.send({ status: "true" });
-          //res.end();
-        } else {
-          res.send({ status: "false" });
-        }
+    connection.query("select UserPassword from registered_user where Username = ?", [req.body.username], function (err, results, fields) {
+      const isValid = bcrypt.compare(req.body.password, String(results[0]));
+      if (results != 0 && isValid) {
+        res.send({ status: "true" });
+        //res.end();
+      } else {
+        res.send({ status: "false" });
       }
-    );
+    });
   }
 });
 
@@ -63,6 +59,45 @@ exp.get("/questions", (req, res) => {
   );
 });
 
+// get user data for account page 
+exp.post("/account/get", (req, res) => {
+  connection.query("select * from registered_user where Username = ?",[req.body.dname],
+    function (err, result, fields) {
+      if (result != 0) {
+        res.send({
+          result: result,
+          status: "true",
+        });
+      } else {
+        res.send({ status: "false" });
+      }
+    }
+  );
+});
+
+//update password using account page //Zahraah
+exp.post("/updatepassword", (req, res) => {
+  if(req.body.password != "" && req.body.confirm != "" && req.body.password == req.body.confirm){
+    connection.query("select UserPassword from registered_user where Username = ?", [req.body.dname], 
+    function (err, results, fields) {
+      //compare new password with old password to check if they are different
+      const isValid = bcrypt.compare(req.body.password, String(results[0]));
+      if (results != 0 && !isValid) {
+        //hash password
+        const hashedPassword1 = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync());
+        connection.query("UPDATE registered_user SET UserPassword = ? WHERE Username = ?", 
+        [hashedPassword1 , req.body.dname], function (err, results, fields) {
+          res.send({ status: "true" });
+        });
+      } else {
+        //user clicks save but they haven't changed thier password
+        res.send({ status: "false" });
+      }
+    });
+  }
+});
+
+//registration
 const { Prohairesis } = require("prohairesis"); //for mysql
 const mySQLstring =
   "mysql://b4129b27e9a1e2:87009bd8@us-cdbr-east-05.cleardb.net/heroku_45ea15f427c56e8?reconnect=true";
@@ -71,12 +106,9 @@ exp.use(express.static("public"));
 const bcrypt = require("bcrypt");
 const { request } = require("http");
 
-//insert new user into table
+//insert new user into table 
 exp.post("/register", (req, res) => {
-  connection.query(
-    "select * from registered_user where Username = ?",
-    [req.body.USERNAME],
-    function (err, result, fields) {
+  connection.query("select * from registered_user where Username = ?", [req.body.USERNAME], function (err, result, fields) {
       if (result.length > 0) {
         res.send({ status: "fail" }); //username already exists
       } else {
@@ -100,8 +132,8 @@ exp.post("/register", (req, res) => {
   );
 });
 
-// set user details 2
-exp.post("/account/set2", (req, res) => {
+// set user details 2 //Shahil
+/*exp.post("/account/set2", (req, res) => {
   connection.query(
     "select * from register_user where Username = ? and UserPassword = ?",
     [req.body.username, req.body.password],
@@ -120,9 +152,9 @@ exp.post("/account/set2", (req, res) => {
       }
     }
   );
-});
+});*/
 
-exp.post("/account/set", (req, res) => {
+/*exp.post("/account/set", (req, res) => { //Shahil
   connection.query(
     "select * from registered_user where Userid=?",
     [req.body.userId],
@@ -142,25 +174,7 @@ exp.post("/account/set", (req, res) => {
       }
     }
   );
-});
-
-// get user data for account page
-exp.post("/account/get", (req, res) => {
-  connection.query(
-    "select * from registered_user where Userid = ?",
-    [req.body.userId],
-    function (err, result, fields) {
-      if (result) {
-        res.send({
-          result: result,
-          status: "true",
-        });
-      } else {
-        res.send({ status: "false" });
-      }
-    }
-  );
-});
+});*/
 
 // Start the Express server
 exp.listen(4000, () => console.log("Server running on port 4000!"));
