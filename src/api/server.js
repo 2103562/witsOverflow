@@ -30,10 +30,10 @@ exp.use(bodyParser.raw())
 //login with hashed password
 exp.post('/login', (req, res) => {
   if(req.body.username != '' && req.body.password != ''){
-      connection.query("select * from registered_user where Username = ?", [req.body.username], function (err, results, fields) {
+      connection.query("select * from registered_user where Username = ?", [req.body.username], function (err, results, fields) {   
       const isValid = bcrypt.compare(req.body.password, String(results[3]));
       if(results != 0 && isValid){
-          res.send({status: "true"});
+          res.send({status: "true", userId:results[0]['Userid']});
           //res.end();
       } else{
           res.send({status:"false"})
