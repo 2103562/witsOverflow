@@ -1,55 +1,159 @@
 <script>
+import axios from 'axios'
 export default {
-    name : 'Signin'
+    name : 'Signin',
+    data(){
+        return{
+            username : '',
+            password : '',
+            USERNAME : '',
+            EMAIL : '',
+            PASSWORD : '',
+            CONFIRMPASSWORD : '',
+             //regex for email validation
+            reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
+            //moderatorCheckbox: false
+        }
+    },
+    methods : {
+        loginMove : function(){
+            var x = document.getElementById("login");
+            var y = document.getElementById("register");
+            var z = document.getElementById("btn");
+
+            x.style.left = "50px";
+            y.style.left = "450px";
+            z.style.left = "0";
+        },
+
+        registerMove : function(){
+            var x = document.getElementById("login");
+            var y = document.getElementById("register");
+            var z = document.getElementById("btn");
+
+            x.style.left = "-400px";
+            y.style.left = "50px";
+            z.style.left = "110px";
+        },
+
+        loginCall(){
+             axios.post('http://localhost:4000/login',{
+                 username : this.username,
+                 password : this.password
+             })
+             .then(response =>{
+                console.log(response.data['status'])
+                if (response.data['status'] == 'true'){
+                    this.$store.commit('logged',this.username)
+                    this.$store.commit('setId',response.data['userId'])
+                    console.log(this.$store.state.signedIn)
+                    console.log(this.$store.state.username)
+                    console.log(this.$store.state.userId)
+                    document.getElementById("account").click()
+                } 
+             }).catch(error =>{
+                console.log(error);
+            });
+        },
+
+        registerCall : function() {
+            //validation
+            var USERNAME = String(document.getElementById("USERNAME").value);
+            var EMAIL = String(document.getElementById("EMAIL").value);
+            var PASSWORD = String(document.getElementById("PASSWORD").value);
+            var CONFIRMPASSWORD = String(document.getElementById("CONFIRMPASSWORD").value);
+            var bValid = true;
+
+            if(USERNAME == '' || EMAIL == '' || CONFIRMPASSWORD == '' || PASSWORD == ''){
+                bValid = false;
+                alert("Please fill in all fields");
+            }
+            else{
+                var strRegex = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
+                console.log(EMAIL.match(strRegex))
+                if (!this.reg.test(EMAIL)) {
+                    bValid = false;
+                    alert("Invalid e-mail")
+                }
+
+                if (PASSWORD == '' || CONFIRMPASSWORD == '' || PASSWORD != CONFIRMPASSWORD) {
+                    bValid = false;
+                    alert("Passwords do not match")
+                }
+
+                //validation complete (using above and in html below)
+                if (bValid == true) {
+                    //using the server.js file
+                    axios.post('http://localhost:4000/register', {
+                        //get values from form input
+                        USERNAME : this.USERNAME,
+                        EMAIL : this.EMAIL,
+                        PASSWORD : this.PASSWORD,
+                        CONFIRMPASSWORD : this.CONFIRMPASSWORD
+                    })
+                    .then(response => {
+                        console.log(response.data['status'])
+                        if (response.data['status'] == 'pass'){
+                            //track if a user already signed in?
+                            this.$store.commit('logged',this.USERNAME)
+                            console.log(this.$store.state.signedIn)
+                            //registration successful
+                            alert('Registration successful!') 
+                            //redirect to account page
+                            document.getElementById("account").click(); 
+                        }
+                        else{
+                            alert('Username already exists') //DOESN'T REINSERT DATA BUT ALERT ONLY SHOWS SOMETIMES????
+                        }
+                    })
+                    .catch(function(error){
+                        console.log(error.response.data);
+                        alert("Error, please try again.")
+                    });
+                } else {
+                    return
+                }
+            }
+        }
+    }
 }
-    var x = document.getElementById("login");
-    var y = document.getElementById("register");
-    var z = document.getElementById("btn");
 
-    function register(){
-        x.style.left = "-400px";
-        y.style.left = "50px";
-        z.style.left = "110px";
-    }
-
-    function login(){
-        x.style.left = "50px";
-        y.style.left = "450px";
-        z.style.left = "0";
-    }
 </script>
 
 <template>
         <div class="hero">
             <div class="form__box">
                 <div class="button__box">
-                    <div id="btn"></div>
-                    <button type="button" class="toggleBtn" onclick="login()">Log In</button>
-                    <button type="button" class="toggleBtn" onclick="register()">Sign Up</button>
+                    <div id="btn">
+
+                    </div>
+                    <button @click="loginMove" type="button" class="toggleBtn">Log In</button>
+                    <button @click="registerMove" type="button" class="toggleBtn">Sign Up</button>
                 </div>
 
                 <div id="error"></div>
 
-                <form id="login" class="input__group" action="/" method="POST">
+                <form id="login" class="input__group">
                     <h2>Login</h2>
-                        <input type="text" name="Username" class="input__field" placeholder="Username" required>
-                        <input type="text" name="UserPassword" class="input__field" placeholder="Password" minlength=8 required>
+                        <input v-model="username" type="text" name="Username" class="input__field" placeholder="Username" required>
+                        <input v-model="password" type="text" name="UserPassword" class="input__field" placeholder="Password" required>
                         <input type="checkbox" class="check__box"><span>Remember Password</span>
-                        <button type="submit" class="submitBtn">Log In</button>   
+                        <button @click="loginCall" type="submit" class="submitBtn">Log In</button>   
                         
                 </form>
                 
-                <form id="register" class="input__group" action="/" method="POST">
+                <form id="register" class="input__group">
                     <h2>Sign Up</h2>
-                    <input type="text" name="username" class="input__field" placeholder="Username" required>
-                    <input type="text" name="email" class="input__field" placeholder="Email" required>
-                    <input type="text" name="password" class="input__field" placeholder="Password" required>
-                    <input type="text" class="input__field" placeholder="Confirm Password" required>
-                    <input type="checkbox" class="check__box"><span>Sign up as a moderator</span>
-                    <button type="submit" class="submitBtn">Sign Up</button>
+                    <input id="USERNAME" v-model="USERNAME" type="text"  class="input__field" placeholder="Username" maxlength="15" >
+                    <input id="EMAIL" v-model="EMAIL" type="text"  class="input__field" placeholder="Email" >
+                    <input id="PASSWORD" v-model="PASSWORD" type="text"  class="input__field" placeholder="Password"  minlength="8">
+                    <input id="CONFIRMPASSWORD" v-model="CONFIRMPASSWORD"  type="text" class="input__field" placeholder="Confirm Password"  minlength="8">
+                    <input type="checkbox" v-model="moderatorCheckbox" class="check__box"><span>Sign up as a moderator</span>
+                    <button @click="registerCall" class="submitBtn">Sign Up</button>
                 </form>
             </div>
         </div>
+        
             
 </template>
 
@@ -95,6 +199,7 @@ export default {
 
 .toggleBtn {
     padding: 10px 30px;
+    margin-left: 5px;
     cursor: pointer;
     background: transparent;
     border: 0;
@@ -106,7 +211,7 @@ export default {
     top: 0;
     left: 0;
     position: absolute;
-    width: 110px;
+    width: 124px;
     height: 100%;
     background: linear-gradient(to right, #2248e2, #649df1);
     border-radius: 30px;
