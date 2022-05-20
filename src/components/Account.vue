@@ -17,7 +17,7 @@ export default {
   methods: {
     getQuestions() {
       axios
-        .post("http://localhost:4000/account/questions", { userId: 4 })
+        .post("http://localhost:4000/account/questions", { userId: 14 })
         .then((response) => {
           console.log(response.data["result"]);
           this.questions = response.data["result"];
@@ -32,7 +32,7 @@ export default {
       var confirmField = document.getElementById("confirm");
       axios
         .post("http://localhost:4000/account/get", {
-          userId: 4,
+          userId: 14,
         })
         .then((response) => {
           userObject = response.data["result"];
@@ -210,47 +210,46 @@ export default {
       <div class="d-flex justify-content-between delete-account">
         <p>By deleting your account you will lose all your data</p>
         <a @click="deleteAccount" class="delete-btn">Delete</a>
-        <a @click="getUserData" class="custom-btn">Refresh</a>
       </div>
     </div>
 
     <div class="row d-flex justify-content-between">
       <a @click="validate" class="custom-btn">Save changes</a>
     </div>
-  </div>
 
-  <div class="top-questions-container d-flex flex-column">
-    <h3>Top Questions</h3>
+    <div class="top-questions-container d-flex flex-column">
+      <h3>My Questions</h3>
 
-    <div class="list-group">
-      <a
-        v-for="question in questions"
-        :key="question.id"
-        class="list-group-item list-group-item-action d-flex flex-row"
-      >
-        <div class="buttons-container d-flex flex-column col-1">
-          <div class="votes-container">
-            <p>{{ question.votes }}</p>
-            <p>votes</p>
+      <div class="list-group">
+        <a
+          v-for="question in questions"
+          :key="question.id"
+          class="list-group-item list-group-item-action d-flex flex-row"
+        >
+          <div class="buttons-container d-flex flex-column col-1">
+            <div class="votes-container">
+              <p>{{ question.votes }}</p>
+              <p>votes</p>
+            </div>
+
+            <div class="answers-container">
+              <p>{{ question.answers }}</p>
+              <p>answers</p>
+            </div>
           </div>
 
-          <div class="answers-container">
-            <p>{{ question.answers }}</p>
-            <p>answers</p>
+          <div class="d-flex d-flex flex-column col-9">
+            <h5 class="mb-1">{{ question.heading }}</h5>
+            <p class="mb-1">{{ question.description }}</p>
+            <p class="mb-1">{{ question.tags }}</p>
           </div>
-        </div>
 
-        <div class="d-flex d-flex flex-column col-9">
-          <h5 class="mb-1">{{ question.heading }}</h5>
-          <p class="mb-1">{{ question.description }}</p>
-          <p class="mb-1">{{ question.tags }}</p>
-        </div>
-
-        <div class="d-flex flex-column col justify-content-between">
-          <small>{{ question.user }}</small>
-          <small>{{ question.time }}</small>
-        </div>
-      </a>
+          <div class="d-flex flex-column col justify-content-between">
+            <small>{{ question.user }}</small>
+            <small>{{ question.time }}</small>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </template>
