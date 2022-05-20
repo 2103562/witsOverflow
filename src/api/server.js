@@ -28,24 +28,46 @@ exp.use(bodyParser.json());
 exp.use(bodyParser.raw());
 
 //login with hashed password
-exp.post('/login', (req, res) => {
-  if(req.body.username != '' && req.body.password != ''){
-      connection.query("select * from registered_user where Username = ?", [req.body.username], function (err, results, fields) {   
-      const isValid = bcrypt.compare(req.body.password, String(results[3]));
-      if(results != 0 && isValid){
-          res.send({status: "true", userId:results[0]['Userid']});
+exp.post("/login", (req, res) => {
+  if (req.body.username != "" && req.body.password != "") {
+    connection.query(
+      "select * from registered_user where Username = ?",
+      [req.body.username],
+      function (err, results, fields) {
+        const isValid = bcrypt.compare(req.body.password, String(results[3]));
+        if (results != 0 && isValid) {
+          res.send({ status: "true", userId: results[0]["Userid"] });
           //res.end();
-      } else{
-          res.send({status:"false"})
+        } else {
+          res.send({ status: "false" });
+        }
       }
-    });
+    );
   }
-})
+});
 
 // questions to display on homepage
 exp.get("/questions", (req, res) => {
   connection.query(
     "select * from tbl_question",
+    function (err, result, fields) {
+      if (result) {
+        res.send({
+          result: result,
+          status: "true",
+        });
+      } else {
+        res.send({ status: "false" });
+      }
+    }
+  );
+});
+
+// questions to display on account page
+exp.post("/account/questions", (req, res) => {
+  connection.query(
+    "select * from tbl_question where id = ?",
+    [req.body.userId],
     function (err, result, fields) {
       if (result) {
         res.send({
@@ -125,9 +147,8 @@ exp.post("/account/set", (req, res) => {
     function (err, result, fields) {
       if (result) {
         database.execute(
-          "update table registered_user set Username = @USERNAME,UserPassword = @PASSWORD where Userid = @USERID",
+          "update table registered_user set UserPassword = @PASSWORD where Userid = @USERID",
           {
-            USERNAME: req.body.USERNAME,
             PASSWORD: req.body.PASSWORD,
             USERID: req.body.USERID,
           }
