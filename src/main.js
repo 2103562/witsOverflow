@@ -16,6 +16,9 @@ const store = createStore({
       logged (state,name) {
         state.signedIn = true
         state.username = name
+      },
+      setId (state,id){
+        state.userId = id
       }
     }
   })

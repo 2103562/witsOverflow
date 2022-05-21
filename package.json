@@ -8,10 +8,12 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "mysql": "^2.18.1",
+    "prohairesis": "^1.2.5",
     "vue": "^3.2.33",
     "vuex": "^4.0.2"
   },

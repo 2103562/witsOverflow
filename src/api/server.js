@@ -8,19 +8,18 @@ const mysql = require('mysql');
 const bodyParser = require("body-parser"); 
 
 //cors
-const cors = require('cors')
+const cors = require('cors');
 
 //create connection
 const connection = mysql.createConnection({
-    host: "eu-cdbr-west-02.cleardb.net",
-    user: "b485d7053c318c",
-    password: "8dcd5143",
-    database: "heroku_9c5fd54c0bf4617"
+    host: "us-cdbr-east-05.cleardb.net",
+    user: "b4129b27e9a1e2",
+    password: "87009bd8",
+    database: "heroku_45ea15f427c56e8"
 });
 
 // Create Express app
 const exp = express()
-
 
 exp.use(cors())
 
@@ -28,28 +27,59 @@ exp.use(bodyParser.urlencoded(true))
 exp.use(bodyParser.json())
 exp.use(bodyParser.raw())
 
-
-// A test route
+//login with hashed password
 exp.post('/login', (req, res) => {
-        connection.query("select * from register_user where Username = ? and UserPassword = ?", [req.body.username,req.body.password],  function (err, result, fields) {
-            if(result){
-                res.send({status: "true"});
-            } else{
-                res.send({status:"false"})
-            }
-        });
+  if(req.body.username != '' && req.body.password != ''){
+      connection.query("select * from registered_user where Username = ?", [req.body.username], function (err, results, fields) {   
+      const isValid = bcrypt.compare(req.body.password, String(results[3]));
+      if(results != 0 && isValid){
+          res.send({status: "true", userId:results[0]['Userid']});
+          //res.end();
+      } else{
+          res.send({status:"false"})
+      }
+    });
+  }
 })
 
-// questions
+// questions to display on homepage
 exp.get('/questions', (req, res) => {
     connection.query("select * from tbl_question", function (err, result, fields) {
-        if(result.length > 0){
+        if(result){
             res.send({
                 result: result,
                 status: "true"
         });
         } else{
             res.send({status:"false"})
+        }
+    });
+})
+
+const { Prohairesis } = require("prohairesis"); //for mysql
+const mySQLstring = 'mysql://b4129b27e9a1e2:87009bd8@us-cdbr-east-05.cleardb.net/heroku_45ea15f427c56e8?reconnect=true'
+const database = new Prohairesis(mySQLstring)
+exp.use(express.static('public'))
+const bcrypt = require('bcrypt');
+const { request } = require('http');
+
+//insert new user into table
+exp.post('/register', (req, res) => {
+    connection.query("select * from registered_user where Username = ?", [req.body.USERNAME],  function (err, result, fields) {
+        if(result.length > 0){
+            res.send({status: "fail"}); //username already exists
+        } else {
+            //hash password
+            const hashedPassword = bcrypt.hashSync(req.body.PASSWORD, bcrypt.genSaltSync());
+
+            database.execute(
+            'INSERT INTO registered_user (Username, Email, UserPassword) VALUES (@USERNAME, @EMAIL, @PASSWORD)',
+            {
+                USERNAME: req.body.USERNAME,
+                EMAIL: req.body.EMAIL,
+                PASSWORD: hashedPassword,
+            });
+            res.send({status: "pass"}); //registration successfull
         }
     });
 })
