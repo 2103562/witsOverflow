@@ -32,7 +32,7 @@ export default {
 
             <div class="list-group">
 
-                <a v-for="question in questions" :key="question.id" class="list-group-item list-group-item-action d-flex flex-row">
+              <li><a v-for="question in questions" :key="question.id" class="list-group-item list-group-item-action d-flex flex-row" href="#/answer?qid={{question.id}}">
                     <div class="buttons-container d-flex flex-column col-1">
                         <div class="votes-container">
                                 <p>{{question.votes}}</p>
@@ -58,7 +58,7 @@ export default {
                         <small>{{question.time}}</small>
                     </div>
 
-                </a>
+                </a></li>
 
             </div>
 
@@ -66,7 +66,7 @@ export default {
 
         <div class="d-flex function-buttons-container">
             <a class="btn-ask-question" href="#/answer">
-                Ask a question
+                Answer a question
             </a>
             <a class="btn btn-outline-dark" href="#/signin">
                 Vote

@@ -1,13 +1,17 @@
 <script>
+
 import axios  from "axios";
 export default {
     name : 'Answer',
     data(){
 
-        return{ answer_given : ''}
+        return{ answer_given : '' }
     },
 
     methods : {
+
+
+       
 
         AnswerCall : function(){
             var answer_given = String(document.getElementById("answer_given").value);
@@ -17,7 +21,7 @@ export default {
                 .then(response => {
                     console.log(response.data['status'])
                     if (response.data['status'] == 'pass'){
-                        alert ("Question Submited")
+                        alert ("Answer Submited")
                         }
                     
                 })
@@ -41,132 +45,167 @@ export default {
 <template>
         
             
-                <div> 
+                <div class="account-container d-flex flex-column" > 
+                    <div   class = "row"> <h2>ANSWER QUESTION</h2>
+                     </div>
+                <div class="output-group">
+                    <!--question asked-->
                 
-                <form id="answer" class="input__group">
-                    <h2>ANSWER  QUESTION</h2>
-                    <h1>Question  :   <output id="question">"question will be  displayed here"</output> </h1>
+                <form>
 
+                    <p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;  ">Question Asked:</p>
+                    <ol><li id="question.id" > <h1> </h1> </li></ol>
+                    <p></p>
+                    <h1 type="text" id="question_asked"  style=" position: relative;left:20px; top:10px ; " >  </h1>
+                    <p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Answers:</p>
+                
 
-
-                    <input id="answer_given" v-model="answer_given" type="text"  class="input__field" placeholder="insert your answer here"  width="100%" required>
-                    <button @click="AnswerCall" class="submitBtn">Submit Answer</button>
-
-                    <div class="d-flex function-buttons-container">
-            <a class="btn-Questions-table" href="#/questions">
-                Questions Table
-            </a>       
-        </div>
-                    
+                    <textarea id="answer_given"  type="text"  class="question" placeholder="insert your answer here"  width="100%" required></textarea>
+                    <button class="post-answer-btn" @click="AnswerCall" >Submit Answer</button>
                 </form>
-
-            </div>
-
-        
-      
-        
-            
+                </div>
+                       
+        </div>    
 </template>
 
 
 
-<style>
+<style scoped>
 
-.logo {
-    margin: 30px auto;
-    text-align: center;
-}
-.logo img {
-    width: 30px;
-    bottom: 50px;
-}
-
-
-
-.button__box {
-    width: 100%;
-    margin: 50%;
-    position: relative;
-    box-shadow: 0 0 20px 9px #0531f51f;
-    border-radius: 30px;
+.fa.fa-navicon{
+    margin-right: 40px;
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: gray;
 }
-
-.toggleBtn {
-    padding: 10px 30px;
-    margin-left: 5px;
-    cursor: pointer;
-    background: transparent;
-    border: 0;
-    outline: none;
-    position: relative;
+.account-container{
+    width: 75%;
+    border-radius: 15px;
+    box-shadow: 0px 0px 14px -5px rgba(76, 75, 75, 0.75);
+    padding: 35px;
+    display: flex;
+    margin: 60px auto;
 }
-
-#btn {
-    top: 0;
-    left: 0;
-    position: absolute;
-    width: 124px;
-    height: 100%;
-    background: linear-gradient(to right, #2248e2, #649df1);
-    border-radius: 30px;
-    transition: .5s;
+.account-container .row:not(:first-child), .account-container .row:not(:last-child){
+    margin-bottom: 20px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid rgb(211, 211, 211);
+    
 }
-
-.input__group {
-    top: 180px;
-    position: absolute;
-    width:100%;
-    transition: .5s;
+.account-container .row:last-child{
+    border-bottom: none;
 }
-
-.input__field {
+.account-container .row:first-child{
+    margin-bottom: 15px;
+}
+.form-group label{
+    margin-bottom: 8px;
+}
+.form-group{
+    width: 440px;
+}
+.delete-account a{
+    text-decoration: none;
+    color: var(--bs-body-color);
+}
+.top-questions-container{
+    margin: 50px auto;
+    width: 90%;
+}
+.list-group{
     width: 100%;
-    padding: 10px 0;
-    margin: 5px 0;
-    border-left: 0;
-    border-top: 0;
-    border-right: 0;
-    border-bottom: 1px solid rgb(123, 135, 226);
-    outline: none;
-    background: transparent;
+    margin: 30px auto;
 }
-
-.submitBtn {
-    width: 85%;
-    padding: 10px 30px;
-    cursor: pointer;
-    display: block;
-    margin: auto;
-    background: linear-gradient(to right, #2248e2, #649df1);
-    border: 0;
-    outline: none;
-    border-radius: 30px;
+.list-group a{
+    padding: 15px;
 }
-
-.check__box {
-    margin: 30px 10px 30px 0;
+.buttons-container{
+    margin-right: 40px;
+    justify-content: center;
+    align-items: center;
 }
-
-span {
-    color: rgb(136, 144, 205);
-    font-size: 12px;
-    bottom: 68px;
-    position: absolute;
+.avatar-header{
+    margin-top: 30px;
 }
-
-#login {
-    left: 50px;
+.user-avatar{
+    width: 85px;
+    height: 85px;
+    border: 1px rgb(201, 204, 207) solid;
+    border-radius: 50%;
+    padding: 3px;
 }
-
-#register {
-    left: 450px;
+.img-container{
+    align-items: center;
 }
-
-h2 {
-    text-align: center;
-    bottom: 50px;
-    position: relative;
+.img-container a{
+    margin-left: 25px;
+    transition: .2s;
+}
+.upload-button, .remove-button{
+    border: 1px solid #ced4da;
+    width: 100px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 4px;
+}
+.post-answer-btn{
+    width: 150px;
+    height: 40px;
+    color: white;
+    font-weight: 700;
+    background: #1aa3ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-left: auto;
+}
+.question{
+    height: 50px;
+    width: 800px;
+    resize : none; 
+    text-align: left;
+    padding-left:0;
+    padding-top:0;
+    padding-bottom:0.4em;
+    padding-right: 0.4em; 
+    margin: 20px 20px;
+    border: 3px solid #ccc;
+    border-radius: 4px;
+    text-align: left;
+    font-size:20px;
+    box-sizing: border-box;
+}
+.answer{
+    height: 400px;
+    width: 800px;
+    resize : none; 
+    text-align: left;
+    padding-left:0;
+    padding-top:0;
+    padding-bottom:0.4em;
+    padding-right: 0.4em; 
+    margin: 20px 20px;
+    border: 3px solid #ccc;
+    border-radius: 4px;
+    text-align: left;
+    font-size:20px;
+    box-sizing: border-box;
+}
+.question::-webkit-scrollbar {
+    width: 1em;
+}
+.question::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+.question::-webkit-scrollbar-thumb {
+  background-color: #1aa3ff;
+  outline: 1px solid slategrey;
 }
 </style>
