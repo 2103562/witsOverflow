@@ -4,6 +4,7 @@ export default {
     name : 'Home',
     data(){
         return{
+            isPressed:false,
             questions : [
                 {
                     votes : 12,
@@ -65,10 +66,13 @@ export default {
 
                 
         },
-        downvote(thequestion){
-            if(thequestion>=1){
-                thequestion--
-            }
+       upvote(upvote){
+           upvote++
+           this.isPressed=false;
+           console.log(upvote)
+            console.log(this.isPressed)
+         
+          
         }
 
     },
@@ -109,8 +113,8 @@ export default {
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
                         <div class="d-flex flex-row row justify-content-between" >
-                        <a class="btn-upvote" @click="question.votes++">Upvote</a>
-                        <a class="btn-upvote" v-if="question.votes>=1" @click=question.votes-->DownVote</a>
+                        <button class="btn-upvote"   @click.once="question.votes++">Upvote</button>
+                        <button class="btn-upvote" v-if="question.votes>=1"  @click.once=question.votes-->DownVote</button>
                         </div>
                     </div>
 
@@ -156,8 +160,8 @@ export default {
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
                         <div class="d-flex flex-row row justify-content-between">
-                       <a class="btn-upvote" @click="question.votes++">Upvote</a>
-                        <a class="btn-upvote" v-if="question.votes>=1" @click=question.votes-->Downvote</a>
+                       <button class="btn-upvote" :class="{disabledbutton: !isPressed}" :disabled="!isPressed" @click.once="question.upvote">Upvote</button>
+                        <button class="btn-upvote" v-if="question.votes>=1" :class="{disabledbutton: !isPressed}" :disabled="!isPressed" @click.once=question.votes-->Downvote</button>
                         </div>
 
                     </div>
@@ -216,6 +220,10 @@ export default {
     border-top-right-radius: 6px;
     text-align: center;
     width: 90px;
+}
+.disabledbutton{
+    background-color: #d8d8d8;
+    cursor: not-allowed
 }
 
 .answers-container{
