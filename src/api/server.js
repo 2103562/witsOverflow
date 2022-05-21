@@ -82,6 +82,42 @@ exp.get('/questions/all', (req, res) => {
     });
 })
 
+
+
+// question asked to display on the answer page
+
+exp.get('/questionAsked', (req, res) => {
+    connection.query("SELECT description FROM tbl_question where id = ?",[req.body.question_asked_id], function (err, result, fields) {
+        if(result){
+            res.send({
+                result: result,
+                status: "true"
+        });
+        } else{
+            res.send({status:"false"})
+        }
+    });
+})
+
+
+//display All other ANSWERS to the question in the answer page
+
+exp.get('/questionAnswers', (req, res) => {
+    connection.query("SELECT answer FROM answers_table where id = ?",[req.body.question_asked_id], function (err, result, fields) {
+        if(result){
+            res.send({
+                result: result,
+                status: "true"
+        });
+        } else{
+            res.send({status:"false"})
+        }
+    });
+})
+
+
+
+
 const { Prohairesis } = require("prohairesis"); //for mysql
 const mySQLstring = 'mysql://b4129b27e9a1e2:87009bd8@us-cdbr-east-05.cleardb.net/heroku_45ea15f427c56e8?reconnect=true'
 const database = new Prohairesis(mySQLstring)
