@@ -65,8 +65,8 @@ export default {
         </div>
 
         <div class="d-flex function-buttons-container">
-            <a class="btn-ask-question" href="#/answer">
-                Answer a question
+            <a class="btn-ask-question" href="#/">
+                Ask A Question
             </a>
             <a class="btn btn-outline-dark" href="#/signin">
                 Vote
