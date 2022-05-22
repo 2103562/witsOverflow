@@ -4,6 +4,7 @@ export default {
     name : 'Home',
     data(){
         return{
+            isPressed:false,
             questions : [
                 {
                     votes : 12,
@@ -64,6 +65,14 @@ export default {
              })
 
                 
+        },
+       upvote(upvote){
+           upvote++
+           this.isPressed=false;
+           console.log(upvote)
+            console.log(this.isPressed)
+         
+          
         }
 
     },
@@ -100,9 +109,13 @@ export default {
                         <p class="mb-1">{{question.tags}}</p>
                     </div>
 
-                    <div class="d-flex flex-column col justify-content-between">
+                    <div class="d-flex flex-row row justify-content-between">
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
+                        <div class="d-flex flex-row row justify-content-between" >
+                        <button class="btn-upvote"   @click.once="question.votes++">Upvote</button>
+                        <button class="btn-upvote" v-if="question.votes>=1"  @click.once=question.votes-->Downvote</button>
+                        </div>
                     </div>
 
                 </a>
@@ -151,9 +164,12 @@ export default {
                         <p class="mb-1">{{question.tags}}</p>
                     </div>
 
-                    <div class="d-flex flex-column col justify-content-between">
+                    <div class="d-flex flex-row row justify-content-between">
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
+                        <button class="btn-upvote" :class="{disabledbutton: !isPressed}" :disabled="!isPressed" @click.once="question.upvote">Upvote</button>
+                        <button class="btn-upvote" v-if="question.votes>=1" :class="{disabledbutton: !isPressed}" :disabled="!isPressed" @click.once=question.votes-->Downvote</button>
+
                     </div>
 
                 </a>
@@ -185,6 +201,23 @@ export default {
     align-items: center;
 }
 
+.btn-upvote{
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    width: 90px;
+    height: 45px;
+    padding: 7px;
+    margin-top: 8px;
+    background: #0d6efd;
+    border: 1px #0d6efd solid ;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
 .votes-container{
     display: flex;
     flex-direction: column;
@@ -195,6 +228,10 @@ export default {
     border-top-right-radius: 6px;
     text-align: center;
     width: 90px;
+}
+.disabledbutton{
+    background-color: #d8d8d8;
+    cursor: not-allowed
 }
 
 .answers-container{
@@ -235,7 +272,7 @@ export default {
     padding: 7px;
 }
 
-.btn-ask-question{
+.btn-ask-question, .btn-upvote{
     background: #0d6efd;
     color: white;
 }
