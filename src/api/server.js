@@ -41,9 +41,37 @@ exp.post('/login', (req, res) => {
     });
   }
 })
+//answer questions
+exp.post('/answer', (req, res) => {
+    connection.query("select * from answers_table where answer = ? and question = ?", [req.body.answer_given],  function (err, result, fields) {
+        if(1 == 1){
+
+            database.execute(
+            'INSERT INTO answers_table (answer) VALUES (@answer_given)',
+            {
+                answer_given: req.body.answer_given,
+            });
+            res.send({status: "pass"}); //answer sent successfully
+        }
+    });
+})
 
 // questions to display on homepage
 exp.get('/questions', (req, res) => {
+    connection.query("select * from tbl_question limit 3", function (err, result, fields) {
+        if(result){
+            res.send({
+                result: result,
+                status: "true"
+        });
+        } else{
+            res.send({status:"false"})
+        }
+    });
+})
+
+// questions to display on question page
+exp.get('/questions/all', (req, res) => {
     connection.query("select * from tbl_question", function (err, result, fields) {
         if(result){
             res.send({
@@ -84,5 +112,13 @@ exp.post('/register', (req, res) => {
     });
 })
 
+//display table list of questions
+
+  exp.get('/QuestionsTable', function(req, res, next) {
+      connection.query('SELECT heading , description , time , user_id from questions_table', function (err, result, fields) {
+      if (err) throw err;
+      res.render('QuestionsTable', { title: 'User List', userData: result});
+    });
+  });
 // Start the Express server
 exp.listen(4000, () => console.log('Server running on port 4000!'))

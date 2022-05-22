@@ -4,6 +4,9 @@ import Account from './components/Account.vue'
 import Home from './components/Home.vue'
 import Signin from './components/Signin.vue'
 import Question from './components/Question.vue'
+import QuestionsTable from './components/QuestionsTable.vue'
+import Answer from './components/Answer.vue'
+
 
 const routes = {
   '/': Home,
@@ -11,6 +14,8 @@ const routes = {
   '/signin': Signin,
   '/signup': Signin,
   '/question': Question,
+  '/questions': QuestionsTable,
+  '/answer' : Answer
 }
 
 export default{
@@ -19,8 +24,10 @@ export default{
     Header,
     Home,
     Account,
-    Signin
-
+	Question,
+    Signin,
+    QuestionsTable,
+    Answer
   },
   data() {
     return {
