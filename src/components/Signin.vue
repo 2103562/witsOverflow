@@ -127,18 +127,18 @@ export default {
                     <div id="btn">
 
                     </div>
-                    <button @click="loginMove" type="button" class="toggleBtn">Log In</button>
+                    <button @click="loginMove" type="button" class="toggleBtn">Sign In</button>
                     <button @click="registerMove" type="button" class="toggleBtn">Sign Up</button>
                 </div>
 
                 <div id="error"></div>
 
                 <form id="login" class="input__group">
-                    <h2>Login</h2>
+                    <h2>Sign In</h2>
                         <input v-model="username" type="text" name="Username" class="input__field" placeholder="Username" required>
                         <input v-model="password" type="text" name="UserPassword" class="input__field" placeholder="Password" required>
                         <input type="checkbox" class="check__box"><span>Remember Password</span>
-                        <button @click="loginCall" type="submit" class="submitBtn">Log In</button>   
+                        <button @click="loginCall" type="submit" class="submitBtn">Sign In</button>   
                         
                 </form>
                 
@@ -213,7 +213,8 @@ export default {
     position: absolute;
     width: 124px;
     height: 100%;
-    background: linear-gradient(to right, #2248e2, #649df1);
+    background: #0d6efd;
+    color: white;
     border-radius: 30px;
     transition: .5s;
 }
@@ -243,7 +244,7 @@ export default {
     cursor: pointer;
     display: block;
     margin: auto;
-    background: linear-gradient(to right, #2248e2, #649df1);
+    background: #0d6efd;
     border: 0;
     outline: none;
     border-radius: 30px;
