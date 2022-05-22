@@ -211,6 +211,7 @@ export default {
     border: 0;
     outline: none;
     position: relative;
+    font-weight: 450;
 }
 
 #btn {
@@ -265,10 +266,12 @@ label {
     border-radius: 30px;
     position: relative;
     top: 30px;
+    font-weight: 600;
 }
 .submitBtn:hover {
     color: #fff;
     font-size: 18px;
+    font-weight: 600;
 }
 
 .check__box {
