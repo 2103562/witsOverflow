@@ -17,7 +17,7 @@ export default {
   methods: {
     getQuestions() {
       axios
-        .post("http://localhost:4000/account/questions", { userId: 14 })
+        .post("http://localhost:4000/account/questions", { userId: this.$store.state.userId })
         .then((response) => {
           console.log(response.data["result"]);
           this.questions = response.data["result"];
@@ -32,7 +32,7 @@ export default {
       var confirmField = document.getElementById("confirm");
       axios
         .post("http://localhost:4000/account/get", {
-          userId: 14,
+          userId: this.$store.state.userId,
         })
         .then((response) => {
           userObject = response.data["result"];
@@ -53,7 +53,7 @@ export default {
         .post("http://localhost:4000/account/set2", {
           USERNAME: username,
           PASSWORD: password,
-          USERID: 4,
+          USERID: this.$store.state.userId,
         })
         .catch((error) => {
           console.log(error);
