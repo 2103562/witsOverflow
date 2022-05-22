@@ -1,13 +1,50 @@
 <script>
+import axios from 'axios'
 export default {
-    name : 'Question'
+    name : 'Question',
+    data(){
+        return{
+            HEADING : '',
+            DISCRIPTION : '',
+            TAGS : '',
+        }
+    },
+
+    methods : {
+        PostQuestionMove : function(){
+            var x = document.getElementById("HEADING");
+            var y = document.getElementById("DISCRIPTION");
+            var z = document.getElementById("TAGS");
+        },
+        
+        PostQuestionCall(){
+             axios.post('http://localhost:4000/login',{
+                 heading : this.heading,
+                 description : this.description,
+                 tags : this.tags,
+             })
+             .then(response =>{
+                console.log(response.data['status'])
+                if (response.data['status'] == 'true'){
+                    this.$store.commit('logged',this.username)
+                    console.log(this.$store.state.signedIn)
+                    document.getElementById("home").click()
+                    alert("Question posted successfully")
+                } 
+             }).catch(error =>{
+                console.log(error);
+                alert("please fill in all fields")
+            });
+        }
+    }   
+
 }
 </script>
 
 <template>
         <div class="account-container d-flex flex-column">
             <div class="row">
-                    <h2>Ask Question!</h2>
+                    <h2>Ask Question</h2>
             </div>
                 <div class="input-group">
                 <!-- title and question input -->
@@ -16,11 +53,15 @@ export default {
                         <textarea class="title" type="text" id="title" placeholder="Type Title..."></textarea>
                         <p style=" position: relative;left:20px; top:10px;">Question:</p>
                         <textarea class="question" type="text" id="question" placeholder="Type Question..."></textarea>
+                        <p style=" position: relative;left:20px; top:10px;">Tags:</p>
+                        <textarea class="title" type="text" id="tag" placeholder="e.g CSS,PHP,HTML "></textarea>
                     </form>
                <span class="input-group-btn" >
              </span>
             </div>
-                <a class="post-question-btn">Post Question</a>
+            <a href="Home.vue">
+                <button @click="PostQuestionCall" type="submit" class="post-question-btn">Post Question</button>
+            </a>
         </div>
 </template>
 
@@ -184,6 +225,7 @@ export default {
 
 .question::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
 
 .question::-webkit-scrollbar-thumb {

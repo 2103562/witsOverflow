@@ -85,5 +85,24 @@ exp.post('/register', (req, res) => {
     });
 })
 
+//insert a question into the question table
+exp.post('/register', (req, res) => {
+    connection.query("select * from tbl_questions where heading = ?", [req.body.HEADING],  function (err, result, fields) {
+        if(result.length > 0){
+            res.send({status: "fail"}); //heading already exists
+        } else {
+            database.execute(
+            'INSERT INTO tbl_question(description, heading, user, time, tags, votes, answers) VALUES (@DESCRIPTION,@HEADING,current_user(),current_timestamp(),@TAGS,0,0)',
+            {
+                DESCRIPTION: req.body.DESCRIPTION,
+                HEADING: req.body.HEADING,
+                TAGS: req.body.TAGS,
+            });
+            res.send({status: "pass"}); //question posted successfull
+        }
+    });
+})
+
+
 // Start the Express server
 exp.listen(4000, () => console.log('Server running on port 4000!'))
