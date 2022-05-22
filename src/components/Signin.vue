@@ -137,8 +137,11 @@ export default {
                     <h2>Sign In</h2>
                         <input v-model="username" type="text" name="Username" class="input__field" placeholder="Username" required>
                         <input v-model="password" type="text" name="UserPassword" class="input__field" placeholder="Password" required>
-                        <input type="checkbox" class="check__box"><span>Remember Password</span>
-                        <button @click="loginCall" type="submit" class="submitBtn">Sign In</button>   
+                        <label>
+                            <input type="checkbox" /> Remember Password
+                        </label>
+                        <button @click="loginCall" type="submit" class="submitBtn">Sign In</button>
+                        <button @click="forgotPasswordCall" class="forgotPassBtn">Forgot Password?</button>   
                         
                 </form>
                 
@@ -148,7 +151,9 @@ export default {
                     <input id="EMAIL" v-model="EMAIL" type="text"  class="input__field" placeholder="Email" >
                     <input id="PASSWORD" v-model="PASSWORD" type="text"  class="input__field" placeholder="Password"  minlength="8">
                     <input id="CONFIRMPASSWORD" v-model="CONFIRMPASSWORD"  type="text" class="input__field" placeholder="Confirm Password"  minlength="8">
-                    <input type="checkbox" v-model="moderatorCheckbox" class="check__box"><span>Sign up as a moderator</span>
+                    <label>
+                            <input type="checkbox" /> Sign up as a moderator
+                        </label>
                     <button @click="registerCall" class="submitBtn">Sign Up</button>
                 </form>
             </div>
@@ -181,6 +186,7 @@ export default {
     width: 380px;
     height: 600px;
     position: relative;
+    bottom: 53px;
     margin: 6% auto;
     background: #fff;
     padding: 5px;
@@ -238,8 +244,17 @@ export default {
     background: transparent;
 }
 
+label {
+    display: block;
+    position: relative;
+    top: 15px;
+    color: #0d6efd;
+    accent-color: #0d6efd;
+}
+
 .submitBtn {
-    width: 85%;
+    width: 100%;
+    height: 45px;
     padding: 10px 30px;
     cursor: pointer;
     display: block;
@@ -248,10 +263,26 @@ export default {
     border: 0;
     outline: none;
     border-radius: 30px;
+    position: relative;
+    top: 30px;
+}
+.submitBtn:hover {
+    color: #fff;
+    font-size: 18px;
 }
 
 .check__box {
     margin: 30px 10px 30px 0;
+}
+
+.forgotPassBtn {
+    border: 0;
+    background: transparent;
+    color: #0d6efd;
+    text-decoration-line: underline;
+    position: relative;
+    left: 145px;
+    top: 40px;
 }
 
 span {
