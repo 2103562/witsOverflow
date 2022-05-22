@@ -5,15 +5,71 @@ export default {
     name : 'Answer',
     data(){
 
-        return{ question_asked : [] , Q_ANSWERS : [] }
+        return{ question_asked : [] , questionAnswers:[]}
     },
 
     methods : {
 
+        parameterCall: function() {
 
+
+           
+            var url_string = window.location.href
+            var url = new URL(url_string)
+            var Q_id = url.searchParams.get('qid')
+            
+            
+            
+            
+            
+           // var search= window.location.href;
+            //JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+
+
+            console.log(Q_id)
+            
+
+
+
+           // var question_asked_id = String(document.getElementsByName(Q_id).value);
+           
+           // var question_asked_id = parseInt([Q_id][0], 10); turns it into interger
+            var question_asked_id_1 = "37";
+
+            var question_asked_id = [Q_id][0];
+            const myJSON = JSON.stringify(question_asked_id);
+           
+
+            console.log(myJSON);
+            console.log(question_asked_id);
+
+
+
+             var question_asked_id_1 = "37";
+             axios.get('http://localhost:4000/questionAsked',{
+             question_asked_id_1 : this.question_asked_id_1
+                }).then(response =>{
+                 console.log(response.data['result'])
+                 this.question_asked = response.data['result']
+             });
+
+
+            //displaying other answers to the question
+
+             axios.get('http://localhost:4000/questionAnswers',{
+                 question_asked_id_1:this.question_asked_id_1
+             })
+             .then(response =>{
+                 console.log(response.data['result'])
+                 this.questionAnswers = response.data['result']
+             });
+
+            
+        }
+         ,
        
-
         AnswerCall : function(){
+            
             var answer_given = String(document.getElementById("answer_given").value);
             axios.post('http://localhost:4000/answer',{
              answer_given : this.answer_given
@@ -31,37 +87,13 @@ export default {
                 });
             
 
-        } ,
-
-
-        QuestionCall(){
-             var question_asked_id = String(document.getElementById("qid").value);
-             var question_asked = '';
-             axios.get('http://localhost:4000/questionAsked')
-             .then(response =>{
-                 console.log(response.data['result'])
-                 this.questions_asked = response.data['result']
-             })
-                
-        } ,
-
-
-        AllAnswersCall(){
-            
-             axios.get('http://localhost:4000/questionAnswers')
-             .then(response =>{
-                 console.log(response.data['result'])
-                 this. Q_ANSWERS = response.data['result']
-             })
-
         }
 
-    } ,
 
+    }
+    ,
     mounted(){
-        this.QuestionCall()
-        this.AllAnswersCall()
-        //this.AnswerCall
+        this.parameterCall()
     }
 
 
@@ -81,39 +113,39 @@ export default {
                 
                 <form>
 
-                    <p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;  ">Question Asked:</p>
-                    <p>{{question_asked}}</p>
-                    <h1 type="text" id="question_asked"  style=" position: relative;left:20px; top:10px ; " >  </h1>
-                    <p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Answers:</p>
-<!--display all answers-->
-                    <div class="list-group">
-                    <li><a v-for="Q_ANSWER in Q_ANSWERS" :key="Q_ANSWER.id" class="list-group-item list-group-item-action d-flex flex-row">
-                    <div class="buttons-container d-flex flex-column col-1">
-                        
+                    <b><p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;  "  font-weight:bold >Question Asked:</p></b>
+                    <p v-for="question_asked in question_asked" :key="question_asked.id" style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">{{question_asked.description}}</p>
+                    <p></p>
+                    
+                    <b><p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Other Answers:</p></b>
+                   <div class="top-questions-container d-flex flex-column">
+                   <div class="list-group" >
+                   <a v-for="questionAnswers in questionAnswers" :key="questionAnswers.id" class="list-group-item list-group-item-action d-flex flex-row"  >
+                   <div class="buttons-container d-flex flex-column col-1">
                         <div class="answers-container">
-                                <p>{{Q_ANSWER.votes}}</p>
+                            <p>{{questionAnswers.votes}}</p>
                                 <p>votes</p>
-
                         </div>
+                        </div>
+
+                        <div class="d-flex d-flex flex-column col-9">
+                        <p class="mb-1">{{questionAnswers.answer}}</p>
+                        </div>
+
+                    </a>
+                    </div>
                     </div>
 
-                    <div class="d-flex d-flex flex-column col-9">
-                       <!--<h5 class="mb-1">{{question.heading}}</h5>-->
-                        <p class="mb-1">{{Q_ANSWER.description}}</p>
-                        <!--<p class="mb-1">{{Q_ANSWER.tags}}</p>-->
-                    </div>
 
-                   <!-- <div class="d-flex flex-column col justify-content-between">
-                        <small>{{question.user}}</small>
-                        <small>{{question.time}}</small>
-                    </div> -->
 
-                </a></li>
-                </div>
-                
 
-                    <textarea id="answer_given"  type="text"  class="question" placeholder="Insert your answer here"  width="100%" required></textarea>
+                    <textarea id="answer_given"  type="text"  class="question" placeholder="answer the question"  width="100%" required></textarea>
                     <button class="post-answer-btn" @click="AnswerCall" >Submit Answer</button>
+                    <p></p>
+                    
+                    
+                    
+
                 </form>
                 </div>
                        
@@ -124,6 +156,84 @@ export default {
 
 <style scoped>
 
+
+
+.top-questions-container{
+    margin: 50px auto;
+    width: 90%;
+}
+
+
+.list-group{
+    width: 100%;
+    margin: 30px auto;
+}
+
+.list-group a{
+    padding: 15px;
+}
+
+.buttons-container{
+    margin-right: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.votes-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: hsl(210,8%,45%);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    text-align: center;
+    width: 90px;
+}
+
+.answers-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: hsl(140,40%,55%);
+    border-radius: 6px;
+    text-align: center;
+    width: 90px;
+}
+
+.answers-container p{
+    color: white;
+}
+
+
+.votes-container p, .answers-container p{
+    margin: 0;
+}
+
+.function-buttons-container{
+    justify-content: center;
+    align-items: center;
+}
+
+.function-buttons-container a{
+    margin: 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    width: 130px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+}
+
+.btn-ask-question{
+    background: #0d6efd;
+    color: white;
+}
+  
 .fa.fa-navicon{
     margin-right: 40px;
     display: flex;
@@ -259,85 +369,6 @@ export default {
 .question::-webkit-scrollbar-thumb {
   background-color: #1aa3ff;
   outline: 1px solid slategrey;
-}
-
-
-
-
-.top-questions-container{
-    margin: 50px auto;
-    width: 90%;
-}
-
-
-.list-group{
-    width: 100%;
-    margin: 30px auto;
-}
-
-.list-group a{
-    padding: 15px;
-}
-
-.buttons-container{
-    margin-right: 40px;
-    justify-content: center;
-    align-items: center;
-}
-
-.votes-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: hsl(210,8%,45%);
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    text-align: center;
-    width: 90px;
-}
-
-.answers-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: hsl(140,40%,55%);
-    border-radius: 6px;
-    text-align: center;
-    width: 90px;
-}
-
-.answers-container p{
-    color: white;
-}
-
-
-.votes-container p, .answers-container p{
-    margin: 0;
-}
-
-.function-buttons-container{
-    justify-content: center;
-    align-items: center;
-}
-
-.function-buttons-container a{
-    margin: 10px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: 600;
-    width: 130px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 7px;
-}
-
-.btn-ask-question{
-    background: #0d6efd;
-    color: white;
 }
 
 
