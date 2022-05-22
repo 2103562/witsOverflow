@@ -95,8 +95,11 @@ export default {
                         console.log(response.data['status'])
                         if (response.data['status'] == 'pass'){
                             //track if a user already signed in?
-                            this.$store.commit('logged',this.USERNAME)
+                            this.$store.commit('logged',this.username)
+                            this.$store.commit('setId',response.data['userId'])
                             console.log(this.$store.state.signedIn)
+                            console.log(this.$store.state.username)
+                            console.log(this.$store.state.userId)
                             //registration successful
                             alert('Registration successful!') 
                             //redirect to account page
