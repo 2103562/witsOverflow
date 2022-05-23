@@ -141,7 +141,7 @@ export default {
                             <input type="checkbox" /> Remember Password
                         </label>
                         <button @click="loginCall" type="submit" class="submitBtn">Sign In</button>
-                        <button @click="forgotPasswordCall" class="forgotPassBtn">Forgot Password?</button>   
+                        <a class="forgotPassBtn" href="#/forgotpassword">Forgot Password?</a>  
                         
                 </form>
                 
