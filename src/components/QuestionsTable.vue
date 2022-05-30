@@ -68,6 +68,12 @@ export default {
             <a class="btn-ask-question" href="#/answer">
                 Answer question
             </a>   
+            <a class="btn-ask-question" href="#/">
+                Ask A Question
+            </a>
+            <a class="btn btn-outline-dark" href="#/signin">
+                Vote
+            </a>       
         </div>
 
 </template>

@@ -47,7 +47,7 @@ exp.post('/answer', (req, res) => {
         if(1 == 1){
 
             database.execute(
-            'INSERT INTO answers_table (answer) VALUES (@answer_given)',
+            'INSERT INTO answers_table (answer,questions_id) VALUES (@answer_given, 4)',
             {
                 answer_given: req.body.answer_given,
             });
@@ -84,6 +84,44 @@ exp.get('/questions/all', (req, res) => {
     });
 })
 
+
+
+// question asked to display on the answer page
+
+exp.get('/questionAsked', (req, res) => {
+    connection.query("SELECT description FROM tbl_question where id = 14",[req.body.question_asked_id_1], function (err, result, fields) {
+        if(result){
+
+            res.send({
+                result: result,
+                status: "true"
+
+        });
+        } else{
+            res.send({status:"false"})
+        }
+    });
+})
+
+
+//display All other ANSWERS to the question in the answer page
+
+exp.get('/questionAnswers', (req, res) => {
+    connection.query("SELECT *  FROM answers_table where questions_id = 4",[req.body.question_asked_id_1], function (err, result, fields) {
+        if(result){
+            res.send({
+                result: result,
+                status: "true"
+        });
+        } else{
+            res.send({status:"false"})
+        }
+    });
+})
+
+
+
+
 const { Prohairesis } = require("prohairesis"); //for mysql
 const mySQLstring = 'mysql://b4129b27e9a1e2:87009bd8@us-cdbr-east-05.cleardb.net/heroku_45ea15f427c56e8?reconnect=true'
 const database = new Prohairesis(mySQLstring)
@@ -112,13 +150,6 @@ exp.post('/register', (req, res) => {
     });
 })
 
-//display table list of questions
 
-  exp.get('/QuestionsTable', function(req, res, next) {
-      connection.query('SELECT heading , description , time , user_id from questions_table', function (err, result, fields) {
-      if (err) throw err;
-      res.render('QuestionsTable', { title: 'User List', userData: result});
-    });
-  });
 // Start the Express server
 exp.listen(4000, () => console.log('Server running on port 4000!'))
