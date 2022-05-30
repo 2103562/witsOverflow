@@ -6,6 +6,8 @@ import Signin from './components/Signin.vue'
 import Question from './components/Question.vue'
 import QuestionsTable from './components/QuestionsTable.vue'
 import Answer from './components/Answer.vue'
+mport Forgotpassword from './components/Forgotpassword.vue'
+
 
 
 const routes = {
@@ -15,7 +17,8 @@ const routes = {
   '/signup': Signin,
   '/question': Question,
   '/questions': QuestionsTable,
-  '/answer' : Answer
+  '/answer' : Answer,
+  '/forgotpassword': Forgotpassword,
 }
 
 export default{
@@ -27,7 +30,8 @@ export default{
 	Question,
     Signin,
     QuestionsTable,
-    Answer
+    Answer,
+	Forgotpassword
   },
   data() {
     return {
