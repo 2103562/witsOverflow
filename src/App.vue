@@ -6,7 +6,7 @@ import Signin from './components/Signin.vue'
 import Question from './components/Question.vue'
 import QuestionsTable from './components/QuestionsTable.vue'
 import Answer from './components/Answer.vue'
-mport Forgotpassword from './components/Forgotpassword.vue'
+import Forgotpassword from './components/Forgotpassword.vue'
 
 
 
