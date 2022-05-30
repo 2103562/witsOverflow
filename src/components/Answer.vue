@@ -5,7 +5,6 @@ export default {
     name : 'Answer',
     data(){
 
-        return{ answer_given : '' }
         return{ question_asked : [] , questionAnswers:[]}
     },
 
@@ -114,14 +113,6 @@ export default {
                 
                 <form>
 
-                    <p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;  ">Question Asked:</p>
-                    <ol><li id="question.id" > <h1> </h1> </li></ol>
-                    <p></p>
-                    <h1 type="text" id="question_asked"  style=" position: relative;left:20px; top:10px ; " >  </h1>
-                    <p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Answers:</p>
-                
-
-                    <textarea id="answer_given"  type="text"  class="question" placeholder="insert your answer here"  width="100%" required></textarea>
                     <b><p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;  "  font-weight:bold >Question Asked:</p></b>
                     <p v-for="question_asked in question_asked" :key="question_asked.id" style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">{{question_asked.description}}</p>
                     <p></p>
