@@ -13,6 +13,7 @@ export default {
              //regex for email validation
             reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
             //moderatorCheckbox: false
+            Moderator:"",
         }
     },
     methods : {
@@ -82,37 +83,72 @@ export default {
                 }
 
                 //validation complete (using above and in html below)
-                if (bValid == true) {
-                    //using the server.js file
-                    axios.post('http://localhost:4000/register', {
+                if(bValid == true) {
+                    if(this.$refs.moderatorSelected.checked == true){
+                        //using the server.js file
+                        axios.post('http://localhost:4000/register1', {
                         //get values from form input
                         USERNAME : this.USERNAME,
                         EMAIL : this.EMAIL,
                         PASSWORD : this.PASSWORD,
-                        CONFIRMPASSWORD : this.CONFIRMPASSWORD
-                    })
-                    .then(response => {
-                        console.log(response.data['status'])
-                        if (response.data['status'] == 'pass'){
-                            //track if a user already signed in?
-                            this.$store.commit('logged',this.username)
-                            this.$store.commit('setId',response.data['userId'])
-                            console.log(this.$store.state.signedIn)
-                            console.log(this.$store.state.username)
-                            console.log(this.$store.state.userId)
-                            //registration successful
-                            alert('Registration successful!') 
-                            //redirect to account page
-                            document.getElementById("account").click(); 
-                        }
-                        else{
-                            alert('Username already exists') //DOESN'T REINSERT DATA BUT ALERT ONLY SHOWS SOMETIMES????
-                        }
-                    })
-                    .catch(function(error){
-                        console.log(error.response.data);
-                        alert("Error, please try again.")
-                    });
+                        CONFIRMPASSWORD : this.CONFIRMPASSWORD,
+                        })
+                        .then(response => {
+                            console.log(response.data['status'])
+                            if (response.data['status'] == 'pass'){
+                                //track if a user already signed in?
+                                this.$store.commit('logged',this.username)
+                                this.$store.commit('setId',response.data['userId'])
+                                console.log(this.$store.state.signedIn)
+                                console.log(this.$store.state.username)
+                                console.log(this.$store.state.userId)
+                                //registration successful
+                                alert('Registration successful!') 
+                                //redirect to account page
+                                document.getElementById("account").click(); 
+                            }
+                            else{
+                                alert('Username already exists') //DOESN'T REINSERT DATA BUT ALERT ONLY SHOWS SOMETIMES????
+                            }
+                        })
+                        .catch(function(error){
+                            console.log(error.response.data);
+                            alert("Error, please try again.")
+                        });
+                    }
+                    else{
+                        //using the server.js file
+                        axios.post('http://localhost:4000/register', {
+                        //get values from form input
+                        USERNAME : this.USERNAME,
+                        EMAIL : this.EMAIL,
+                        PASSWORD : this.PASSWORD,
+                        CONFIRMPASSWORD : this.CONFIRMPASSWORD,
+                        })
+                        .then(response => {
+                            console.log(response.data['status'])
+                            if (response.data['status'] == 'pass'){
+                                //track if a user already signed in?
+                                this.$store.commit('logged',this.username)
+                                this.$store.commit('setId',response.data['userId'])
+                                console.log(this.$store.state.signedIn)
+                                console.log(this.$store.state.username)
+                                console.log(this.$store.state.userId)
+                                //registration successful
+                                alert('Registration successful!') 
+                                //redirect to account page
+                                document.getElementById("account").click(); 
+                            }
+                            else{
+                                alert('Username already exists') //DOESN'T REINSERT DATA BUT ALERT ONLY SHOWS SOMETIMES????
+                            }
+                        })
+                        .catch(function(error){
+                            console.log(error.response.data);
+                            alert("Error, please try again.")
+                        });
+                    }
+                    
                 } else {
                     return
                 }
@@ -155,8 +191,8 @@ export default {
                     <input id="PASSWORD" v-model="PASSWORD" type="text"  class="input__field" placeholder="Password"  minlength="8">
                     <input id="CONFIRMPASSWORD" v-model="CONFIRMPASSWORD"  type="text" class="input__field" placeholder="Confirm Password"  minlength="8">
                     <label>
-                            <input type="checkbox" /> Sign up as a moderator
-                        </label>
+                        <input id="moderatorCheckbox" v-model="moderatorCheckbox" type="checkbox" ref="moderatorSelected"/> Sign up as a moderator
+                    </label>
                     <button @click="registerCall" class="submitBtn">Sign Up</button>
                 </form>
             </div>

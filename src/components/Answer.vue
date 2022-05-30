@@ -69,7 +69,46 @@ export default {
                 console.log(error.response.data);
                 alert("Error, please try again.")
             });
+        },
+
+        ModeratorDeleteQuestion : function(){
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const qid = urlParams.get('qid');
+            console.log(qid); 
+
+            axios.post('http://localhost:4000/DeleteQuestion',{
+                qid
+            })
+            .then(response =>{
+                console.log(response.data['result'])
+                alert("Question removed");
+            })
+            .catch(function(error){
+                console.log(error.response.data);
+                alert("Error")
+            });
+        },
+
+        ModeratorDeleteAnswer : function(){
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const qid = urlParams.get('qid');
+            console.log(qid); 
+
+            axios.post('http://localhost:4000/DeleteAnswer',{
+                qid
+            })
+            .then(response =>{
+                console.log(response.data['result'])
+                alert("Answer removed");
+            })
+            .catch(function(error){
+                console.log(error.response.data);
+                alert("Error")
+            });
         }
+
     },
     mounted(){
         this.parameterCall()

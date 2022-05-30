@@ -34,7 +34,7 @@ exp.use(express.static('public'))
 const bcrypt = require('bcrypt');
 const { request } = require('http');
 
-//insert new user into table
+//insert new user into table (not a moderator)
 exp.post('/register', (req, res) => {
     connection.query("select * from registered_user where Username = ?", [req.body.USERNAME],  function (err, result, fields) {
         if(result.length > 0){
@@ -57,16 +57,40 @@ exp.post('/register', (req, res) => {
     });
 })
 
+//insert new user into table (moderator)
+exp.post('/register1', (req, res) => {
+    connection.query("select * from registered_user where Username = ?", [req.body.USERNAME],  function (err, result, fields) {
+        if(result.length > 0){
+            //username already exists
+            res.send({status: "fail"}); 
+        } else {
+            //hash password
+            const hashedPassword = bcrypt.hashSync(req.body.PASSWORD, bcrypt.genSaltSync());
+
+            database.execute(
+            'INSERT INTO registered_user (Username, Email, UserPassword, Moderator) VALUES (@USERNAME, @EMAIL, @PASSWORD, @MODERATOR)',
+            {
+                USERNAME: req.body.USERNAME,
+                EMAIL: req.body.EMAIL,
+                PASSWORD: hashedPassword,
+                MODERATOR: "true",
+            });
+            //registration successfull
+            res.send({status: "pass"}); 
+        }
+    });
+})
+
 //login with hashed password (Signin.vue)
 exp.post('/login', (req, res) => {
-  if(req.body.username != '' && req.body.password != ''){
-      connection.query("select * from registered_user where Username = ?", [req.body.username], function (err, results, fields) {   
-      const isValid = bcrypt.compare(req.body.password, String(results[3]));
-      if(results != 0 && isValid){
-          res.send({status: "true", userId:results[0]['Userid']});
-      } else{
-          res.send({status:"false"})
-      }
+    if(req.body.username != '' && req.body.password != ''){
+        connection.query("select * from registered_user where Username = ?", [req.body.username], function (err, results, fields) {   
+        const isValid = bcrypt.compare(req.body.password, String(results[3]));
+        if(results != 0 && isValid){
+            res.send({status: "true", userId:results[0]['Userid']});
+        } else{
+            res.send({status:"false"})
+        }
     });
   }
 })
@@ -94,9 +118,10 @@ exp.post('/AskQuestion', (req, res) => {
             heading: req.body.heading,
             tags: req.body.tags,
             user : req.body.user,
-        });
-        //question posted successfully
-        res.send({status: "true"}); 
+        }
+    );
+    //question posted successfully
+    res.send({status: "true"}); 
 })
 
 // questions to display on question page (QuestionsTable.vue)
@@ -141,9 +166,87 @@ exp.post('/answer', (req, res) => {
         {
             answer_given: req.body.answer_given,
             qid : req.body.qid,
-        });
-        res.send({status: "pass"}); //answer sent successfully
+        }
+    );
+    res.send({status: "pass"}); //answer sent successfully
 })
+
+//display questions asked by the user who is logged in (Account.vue)
+exp.post("/account/questions", (req, res) => {
+    connection.query(
+        "select * from tbl_question where user = ?",
+        [req.body.username],
+        function (err, result, fields) {
+            if (result) {
+                res.send({
+                result: result,
+                status: "true",
+            });
+            } else {
+                res.send({ status: "false" });
+            }
+        }
+    );
+});
+
+// get user data for account page (Account.vue)
+exp.post("/account/get", (req, res) => {
+    connection.query(
+      "select * from registered_user where Userid = ?",
+      [req.body.userId],
+      function (err, result, fields) {
+        if (result) {
+          res.send({
+            result: result,
+            status: "true",
+          });
+        } else {
+          res.send({ status: "false" });
+        }
+      }
+    );
+});
+
+//update user password (Account.vue)
+exp.post("/account/set", (req, res) => {
+    database.execute(
+        "update registered_user set UserPassword = @PASSWORD where Username = @USERNAME",
+        {
+            PASSWORD: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync()),
+            USERNAME: req.body.username,
+        }
+    );
+    res.send({ status: "true" });
+});
+
+//everything above works
+
+
+
+
+//still working on this below
+//moderator can delete a question (Answer.vue)
+exp.post('/DeleteQuestion', (req, res) => {
+    database.execute(
+        'DELETE FROM tbl_question WHERE id = ?', [req.body.id], function(err, result, fields){
+            res.send({status: "pass"}); //question deleted
+        },
+        'DELETE FROM answers_table WHERE questions_id = ?', [req.body.id], function(err, result, fields){
+            res.send({status: "pass1"}); //answers to that question deleted
+        }
+    )
+})
+
+//moderator can delete an answer (Answer.vue)
+exp.post('/DeleteQuestion', (req, res) => {
+    database.execute(
+        //test if this is gna delete all the answers linked to that question id
+        'DELETE FROM answers_table WHERE questions_id = ?', [req.body.id], function(err, result, fields){
+            res.send({status: "pass1"}); //specific answer deleted
+        }
+    )
+})
+
 
 // Start the Express server
 exp.listen(4000, () => console.log('Server running on port 4000!'))

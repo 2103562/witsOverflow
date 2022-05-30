@@ -9,12 +9,12 @@ export default {
         }
     },
     methods:{
-         testCall(){
-             axios.get('http://localhost:4000/questions/all')
-             .then(response =>{
-                 console.log(response.data['result'])
-                 this.questions = response.data['result']
-             })
+        testCall(){
+            axios.get('http://localhost:4000/questions/all')
+            .then(response =>{
+                console.log(response.data['result'])
+                this.questions = response.data['result']
+            })
         }
     },
     mounted(){
@@ -60,7 +60,7 @@ export default {
         </div>
 
         <div class="d-flex function-buttons-container">
-            <a class="btn-ask-question" href="#/">
+            <a class="btn-ask-question" href="#/question">
                 Ask A Question
             </a>
             <a class="btn btn-outline-dark" href="#/signin">
