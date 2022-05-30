@@ -110,45 +110,6 @@ exp.get('/questions/all', (req, res) => {
     });
 })
 
-/*//answer a question (Answer.vue)
-exp.post('/answer', (req, res) => {
-    connection.query("select * from answers_table where answer = ? and question = ?", [req.body.answer_given],  function (err, result, fields) {
-        if(1 == 1){
-            database.execute(
-            'INSERT INTO answers_table (answer,questions_id) VALUES (@answer_given, 4)',
-            {
-                answer_given: req.body.answer_given,
-            });
-            res.send({status: "pass"}); //answer sent successfully
-        }
-    });
-})
-
-// question asked to display on the answer page (Answer.vue)
-exp.get('/questionAsked', (req, res) => {
-    connection.query("SELECT description FROM tbl_question where id = 14",[req.body.question_asked_id_1], function (err, result, fields) {
-        if(result){
-            res.send({result: result, status: "true"});
-        } else{
-            res.send({status:"false"})
-        }
-    });
-})
-
-//display All other ANSWERS to the question in the answer page (Answer.vue)
-exp.get('/questionAnswers', (req, res) => {
-    connection.query("SELECT *  FROM answers_table where questions_id = 4",[req.body.question_asked_id_1], function (err, result, fields) {
-        if(result){
-            res.send({result: result, status: "true"});
-        } else{
-            res.send({status:"false"})
-        }
-    });
-})*/
-
-
-
-
 //question asked to display on the answer page (Answer.vue)
 //when clicking on a question, the question description must be displayed on the answer page
 exp.post('/questionAsked', (req, res) => {
@@ -173,28 +134,16 @@ exp.post('/questionAnswers', (req, res) => {
     });
 })
 
-
-
-
 //answer a question (Answer.vue)
 exp.post('/answer', (req, res) => {
-    /*connection.query("select * from answers_table where answer = ? and question = ?", [req.body.answer_given],  function (err, result, fields) {
-        if(1 == 1){*/
-            database.execute(
-            'INSERT INTO answers_table (answer,questions_id) VALUES (@answer_given, @qid)',
-            {
-                answer_given: req.body.answer_given,
-                qid : req.body.qid,
-            });
-            res.send({status: "pass"}); //answer sent successfully
-        //}
-    //});
+    database.execute(
+        'INSERT INTO answers_table (answer,questions_id) VALUES (@answer_given, @qid)',
+        {
+            answer_given: req.body.answer_given,
+            qid : req.body.qid,
+        });
+        res.send({status: "pass"}); //answer sent successfully
 })
-
-
-
-
-
 
 // Start the Express server
 exp.listen(4000, () => console.log('Server running on port 4000!'))
