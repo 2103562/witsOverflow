@@ -15,10 +15,7 @@ export default {
                  console.log(response.data['result'])
                  this.questions = response.data['result']
              })
-
-                
         }
-
     },
     mounted(){
         this.testCall()
@@ -37,13 +34,11 @@ export default {
                         <div class="votes-container">
                                 <p>{{question.votes}}</p>
                                 <p>votes</p>
-
                         </div>
 
                         <div class="answers-container">
                             <p>{{question.answers}}</p>
                             <p>answers</p>
-                            
                         </div>
                     </div>
 

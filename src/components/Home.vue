@@ -58,7 +58,7 @@ export default {
                 });
         } */
          testCall(){
-             axios.get('http://localhost:4000/questions')
+             axios.get('http://localhost:4000/questionsHomepage')
              .then(response =>{
                  console.log(response.data['result'])
                  this.questions = response.data['result']

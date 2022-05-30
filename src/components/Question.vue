@@ -18,18 +18,17 @@ export default {
         },
         
         PostQuestionCall(){
-             axios.post('http://localhost:4000/login',{
+             axios.post('http://localhost:4000/AskQuestion',{
                  heading : this.heading,
                  description : this.description,
                  tags : this.tags,
+                 user : this.$store.state.username,
              })
              .then(response =>{
                 console.log(response.data['status'])
                 if (response.data['status'] == 'true'){
-                    this.$store.commit('logged',this.username)
-                    console.log(this.$store.state.signedIn)
-                    document.getElementById("home").click()
                     alert("Question posted successfully")
+                    document.getElementById("question").click();
                 } 
              }).catch(error =>{
                 console.log(error);
@@ -47,21 +46,19 @@ export default {
                     <h2>Ask Question</h2>
             </div>
                 <div class="input-group">
-                <!-- title and question input -->
+                <!-- title, description and tags input -->
                     <form>
-                        <p style=" position: relative;left:20px; top:10px;">Title:</p>
-                        <textarea class="title" type="text" id="title" placeholder="Type Title..."></textarea>
-                        <p style=" position: relative;left:20px; top:10px;">Question:</p>
-                        <textarea class="question" type="text" id="question" placeholder="Type Question..."></textarea>
-                        <p style=" position: relative;left:20px; top:10px;">Tags:</p>
-                        <textarea class="title" type="text" id="tag" placeholder="e.g CSS,PHP,HTML "></textarea>
+                    <p style=" position: relative;left:20px; top:10px;">Title:</p>
+                    <input id="heading" v-model="heading" type="text" class="title" placeholder="Type Title...">
+                    <p style=" position: relative;left:20px; top:10px;">Question:</p>
+                    <input id="description" v-model="description" class="question" type="text" placeholder="Type Question...">
+                    <p style=" position: relative;left:20px; top:10px;">Tags:</p>
+                    <input id="tags" v-model="tags" class="title" type="text" placeholder="e.g CSS,PHP,HTML ">
                     </form>
                <span class="input-group-btn" >
              </span>
             </div>
-            <a href="Home.vue">
-                <button @click="PostQuestionCall" type="submit" class="post-question-btn">Post Question</button>
-            </a>
+            <button @click="PostQuestionCall" type="submit" class="post-question-btn">Post Question</button>
         </div>
 </template>
 
@@ -100,77 +97,6 @@ export default {
     margin-bottom: 15px;
 }
 
-.form-group label{
-    margin-bottom: 8px;
-}
-
-
-.form-group{
-    width: 440px;
-}
-
-.delete-account a{
-    text-decoration: none;
-    color: var(--bs-body-color);
-}
-
-.top-questions-container{
-    margin: 50px auto;
-    width: 90%;
-}
-
-
-.list-group{
-    width: 100%;
-    margin: 30px auto;
-}
-
-.list-group a{
-    padding: 15px;
-}
-
-.buttons-container{
-    margin-right: 40px;
-    justify-content: center;
-    align-items: center;
-}
-
-.avatar-header{
-    margin-top: 30px;
-}
-
-.user-avatar{
-    width: 85px;
-    height: 85px;
-    border: 1px rgb(201, 204, 207) solid;
-    border-radius: 50%;
-    padding: 3px;
-}
-
-.img-container{
-    align-items: center;
-}
-
-.img-container a{
-    margin-left: 25px;
-    transition: .2s;
-
-}
-
-.upload-button, .remove-button{
-    border: 1px solid #ced4da;
-    width: 100px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 4px;
-}
-
-
-
 .post-question-btn{
     width: 150px;
     height: 40px;
@@ -207,6 +133,7 @@ export default {
     width: 800px;
     resize : none; 
     text-align: left;
+    vertical-align: top;
     padding-left:0;
     padding-top:0;
     padding-bottom:0.4em;
@@ -214,7 +141,6 @@ export default {
     margin: 20px 20px;
     border: 3px solid #ccc;
     border-radius: 4px;
-    text-align: left;
     font-size:20px;
     box-sizing: border-box;
 }

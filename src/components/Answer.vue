@@ -5,102 +5,78 @@ export default {
     name : 'Answer',
     data(){
 
-        return{ question_asked : [] , questionAnswers:[]}
+        return{ 
+            question_asked : [] , 
+            questionAnswers:[],
+            qid : '',
+            answer_given : '',
+            }
     },
 
     methods : {
 
         parameterCall: function() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const qid = urlParams.get('qid');
+            console.log(qid); 
 
-
-           
-            var url_string = window.location.href
-            var url = new URL(url_string)
-            var Q_id = url.searchParams.get('qid')
-            
-            
-            
-            
-            
-           // var search= window.location.href;
-            //JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
-
-
-            console.log(Q_id)
-            
-
-
-
-           // var question_asked_id = String(document.getElementsByName(Q_id).value);
-           
-           // var question_asked_id = parseInt([Q_id][0], 10); turns it into interger
-            var question_asked_id_1 = "37";
-
-            var question_asked_id = [Q_id][0];
-            const myJSON = JSON.stringify(question_asked_id);
-           
-
-            console.log(myJSON);
-            console.log(question_asked_id);
-
-
-
-             var question_asked_id_1 = "37";
-             axios.get('http://localhost:4000/questionAsked',{
-             question_asked_id_1 : this.question_asked_id_1
-                }).then(response =>{
-                 console.log(response.data['result'])
-                 this.question_asked = response.data['result']
-             });
-
+            axios.post('http://localhost:4000/questionAsked',{
+                qid
+            })
+            .then(response =>{
+                console.log(response.data['result'])
+                this.question_asked = response.data['result']
+            })
+            .catch(function(error){
+                console.log(error.response.data);
+                alert("Error")
+            });
 
             //displaying other answers to the question
+            axios.post('http://localhost:4000/questionAnswers',{
+                qid
+            })
+            .then(response =>{
+                console.log(response.data['result'])
+                this.questionAnswers = response.data['result']
+            })
+            .catch(function(error){
+               console.log(error.response.data);
+               alert("Error1")
+            });
+        },
 
-             axios.get('http://localhost:4000/questionAnswers',{
-                 question_asked_id_1:this.question_asked_id_1
-             })
-             .then(response =>{
-                 console.log(response.data['result'])
-                 this.questionAnswers = response.data['result']
-             });
-
-            
-        }
-         ,
-       
         AnswerCall : function(){
-            
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const qid = urlParams.get('qid');
+            console.log(qid);
+
             var answer_given = String(document.getElementById("answer_given").value);
             axios.post('http://localhost:4000/answer',{
-             answer_given : this.answer_given
-                })
-                .then(response => {
-                    console.log(response.data['status'])
-                    if (response.data['status'] == 'pass'){
-                        alert ("Answer Submited")
-                        }
-                    
-                })
-                .catch(function(error){
-                    console.log(error.response.data);
-                    alert("Error, please try again.")
-                });
-            
-
+                qid,
+                answer_given : this.answer_given
+            })
+            .then(response => {
+                console.log(response.data['status'])
+                if (response.data['status'] == 'pass'){
+                    alert ("Answer Submited")
+                    document.getElementById("questions").click(); 
+                }  
+            })
+            .catch(function(error){
+                console.log(error.response.data);
+                alert("Error, please try again.")
+            });
         }
-
-
-    }
-    ,
+    },
     mounted(){
         this.parameterCall()
     }
-
-
 }
 
 </script>
-
 
 <template>
         
@@ -136,27 +112,17 @@ export default {
                     </div>
                     </div>
 
-
-
-
-                    <textarea id="answer_given"  type="text"  class="question" placeholder="answer the question"  width="100%" required></textarea>
+                    <input v-model="answer_given" id="answer_given"  type="text"  class="question" placeholder="answer the question"  width="100%" required>
                     <button class="post-answer-btn" @click="AnswerCall" >Submit Answer</button>
                     <p></p>
                     
-                    
-                    
-
                 </form>
-                </div>
-                       
+                </div> 
         </div>    
 </template>
 
 
-
 <style scoped>
-
-
 
 .top-questions-container{
     margin: 50px auto;
@@ -290,31 +256,7 @@ export default {
 .avatar-header{
     margin-top: 30px;
 }
-.user-avatar{
-    width: 85px;
-    height: 85px;
-    border: 1px rgb(201, 204, 207) solid;
-    border-radius: 50%;
-    padding: 3px;
-}
-.img-container{
-    align-items: center;
-}
-.img-container a{
-    margin-left: 25px;
-    transition: .2s;
-}
-.upload-button, .remove-button{
-    border: 1px solid #ced4da;
-    width: 100px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 4px;
-}
+
 .post-answer-btn{
     width: 150px;
     height: 40px;

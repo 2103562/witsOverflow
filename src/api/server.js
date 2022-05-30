@@ -26,7 +26,7 @@ exp.use(bodyParser.urlencoded(true))
 exp.use(bodyParser.json())
 exp.use(bodyParser.raw())
 
-//registration
+//registration (Signin.vue)
 const { Prohairesis } = require("prohairesis"); //for mysql
 const mySQLstring = 'mysql://b4129b27e9a1e2:87009bd8@us-cdbr-east-05.cleardb.net/heroku_45ea15f427c56e8?reconnect=true'
 const database = new Prohairesis(mySQLstring)
@@ -57,7 +57,7 @@ exp.post('/register', (req, res) => {
     });
 })
 
-//login with hashed password
+//login with hashed password (Signin.vue)
 exp.post('/login', (req, res) => {
   if(req.body.username != '' && req.body.password != ''){
       connection.query("select * from registered_user where Username = ?", [req.body.username], function (err, results, fields) {   
@@ -71,8 +71,8 @@ exp.post('/login', (req, res) => {
   }
 })
 
-// questions to display on homepage
-exp.get('/questions', (req, res) => {
+// questions to display on homepage (Home.vue)
+exp.get('/questionsHomepage', (req, res) => {
     connection.query("select * from tbl_question limit 3", function (err, result, fields) {
         if(result){
             res.send({
@@ -85,11 +85,35 @@ exp.get('/questions', (req, res) => {
     });
 })
 
-//answer questions
+//Ask a question (Question.vue) - insert a question into the question table
+exp.post('/AskQuestion', (req, res) => {
+    database.execute(
+        'INSERT INTO tbl_question(description, heading, user, time, tags, votes, answers) VALUES (@description,@heading,@user,current_timestamp(),@tags,0,0)',
+        {
+            description: req.body.description,
+            heading: req.body.heading,
+            tags: req.body.tags,
+            user : req.body.user,
+        });
+        //question posted successfully
+        res.send({status: "true"}); 
+})
+
+// questions to display on question page (QuestionsTable.vue)
+exp.get('/questions/all', (req, res) => {
+    connection.query("select * from tbl_question", function (err, result, fields) {
+        if(result){
+            res.send({ result: result, status: "true" });
+        } else{
+            res.send({status:"false"})
+        }
+    });
+})
+
+/*//answer a question (Answer.vue)
 exp.post('/answer', (req, res) => {
     connection.query("select * from answers_table where answer = ? and question = ?", [req.body.answer_given],  function (err, result, fields) {
         if(1 == 1){
-
             database.execute(
             'INSERT INTO answers_table (answer,questions_id) VALUES (@answer_given, 4)',
             {
@@ -100,25 +124,7 @@ exp.post('/answer', (req, res) => {
     });
 })
 
-
-
-// questions to display on question page
-exp.get('/questions/all', (req, res) => {
-    connection.query("select * from tbl_question", function (err, result, fields) {
-        if(result){
-            res.send({
-                result: result,
-                status: "true"
-        });
-        } else{
-            res.send({status:"false"})
-        }
-    });
-})
-
-
-
-// question asked to display on the answer page
+// question asked to display on the answer page (Answer.vue)
 exp.get('/questionAsked', (req, res) => {
     connection.query("SELECT description FROM tbl_question where id = 14",[req.body.question_asked_id_1], function (err, result, fields) {
         if(result){
@@ -129,8 +135,7 @@ exp.get('/questionAsked', (req, res) => {
     });
 })
 
-
-//display All other ANSWERS to the question in the answer page
+//display All other ANSWERS to the question in the answer page (Answer.vue)
 exp.get('/questionAnswers', (req, res) => {
     connection.query("SELECT *  FROM answers_table where questions_id = 4",[req.body.question_asked_id_1], function (err, result, fields) {
         if(result){
@@ -139,25 +144,56 @@ exp.get('/questionAnswers', (req, res) => {
             res.send({status:"false"})
         }
     });
-})
+})*/
 
-//insert a question into the question table
-exp.post('/register', (req, res) => {
-    connection.query("select * from tbl_questions where heading = ?", [req.body.HEADING],  function (err, result, fields) {
-        if(result.length > 0){
-            res.send({status: "fail"}); //heading already exists
-        } else {
-            database.execute(
-            'INSERT INTO tbl_question(description, heading, user, time, tags, votes, answers) VALUES (@DESCRIPTION,@HEADING,current_user(),current_timestamp(),@TAGS,0,0)',
-            {
-                DESCRIPTION: req.body.DESCRIPTION,
-                HEADING: req.body.HEADING,
-                TAGS: req.body.TAGS,
-            });
-            res.send({status: "pass"}); //question posted successfull
+
+
+
+//question asked to display on the answer page (Answer.vue)
+//when clicking on a question, the question description must be displayed on the answer page
+exp.post('/questionAsked', (req, res) => {
+    connection.query("SELECT description FROM tbl_question where id = ?",[req.body.qid], function (err, result, fields) {
+        if(result){
+            res.send({result: result, status: "true"});
+        } else{
+            res.send({status:"false"})
         }
     });
 })
+
+//display All other ANSWERS to the question in the answer page (Answer.vue)
+//when clicking on a question, all the answers to that question must be displayed on the answer page
+exp.post('/questionAnswers', (req, res) => {
+    connection.query("SELECT * FROM answers_table where questions_id = ?",[req.body.qid], function (err, result, fields) {
+        if(result){
+            res.send({result: result, status: "true"});
+        } else{
+            res.send({status:"false"})
+        }
+    });
+})
+
+
+
+
+//answer a question (Answer.vue)
+exp.post('/answer', (req, res) => {
+    /*connection.query("select * from answers_table where answer = ? and question = ?", [req.body.answer_given],  function (err, result, fields) {
+        if(1 == 1){*/
+            database.execute(
+            'INSERT INTO answers_table (answer,questions_id) VALUES (@answer_given, @qid)',
+            {
+                answer_given: req.body.answer_given,
+                qid : req.body.qid,
+            });
+            res.send({status: "pass"}); //answer sent successfully
+        //}
+    //});
+})
+
+
+
+
 
 
 // Start the Express server
