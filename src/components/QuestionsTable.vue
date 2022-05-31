@@ -37,8 +37,9 @@ export default {
                         </div>
 
                         <div class="answers-container">
-                            <p>{{question.answers}}</p>
-                            <p>answers</p>
+                            <div class="delete-questions">
+                                <button type="button">Delete Question</button>
+                            </div>
                         </div>
                     </div>
 
@@ -109,10 +110,19 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: hsl(140,40%,55%);
+    background: #ee0303;
+    border: 0;
+    outline: none;
     border-radius: 6px;
-    text-align: center;
-    width: 90px;
+    color: white;
+}
+
+.delete-questions button{
+    background: #ee0303;
+    border: 0;
+    outline: none;
+    border-radius: 6px;
+    color: white;
 }
 
 .answers-container p{
