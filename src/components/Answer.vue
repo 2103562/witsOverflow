@@ -61,7 +61,7 @@ export default {
             .then(response => {
                 console.log(response.data['status'])
                 if (response.data['status'] == 'pass'){
-                    alert ("Answer Submited")
+                    alert ("Answer Submitted")
                     document.getElementById("questions").click(); 
                 }  
             })
