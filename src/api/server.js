@@ -219,6 +219,17 @@ exp.post("/account/set", (req, res) => {
     res.send({ status: "true" });
 });
 
+//delete user
+exp.post('/DeleteAccount', (req, res) => {
+    database.execute(
+        'DELETE FROM registered_user WHERE Username = @username', 
+        {
+            username: req.body.username,
+        },
+    )
+    res.send({status: "pass"}); //user deleted
+})
+
 //everything above works
 
 
@@ -228,25 +239,29 @@ exp.post("/account/set", (req, res) => {
 //moderator can delete a question (Answer.vue)
 exp.post('/DeleteQuestion', (req, res) => {
     database.execute(
-        'DELETE FROM tbl_question WHERE id = ?', [req.body.id], function(err, result, fields){
-            res.send({status: "pass"}); //question deleted
+        'DELETE FROM tbl_question WHERE id = @qid', 
+        {
+            qid : req.body.qid,
         },
-        'DELETE FROM answers_table WHERE questions_id = ?', [req.body.id], function(err, result, fields){
-            res.send({status: "pass1"}); //answers to that question deleted
-        }
+        'DELETE FROM answers_table WHERE questions_id = @qid', 
+        {
+            qid : req.body.qid,
+        },
     )
+    res.send({status: "pass"}); //question and it's answers deleted
 })
 
 //moderator can delete an answer (Answer.vue)
 exp.post('/DeleteQuestion', (req, res) => {
     database.execute(
         //test if this is gna delete all the answers linked to that question id
-        'DELETE FROM answers_table WHERE questions_id = ?', [req.body.id], function(err, result, fields){
-            res.send({status: "pass1"}); //specific answer deleted
-        }
+        'DELETE FROM answers_table WHERE questions_id = @qid', 
+        {
+            qid : req.body.qid,
+        },
     )
+    res.send({status: "pass1"}); //specific answer deleted
 })
-
 
 // Start the Express server
 exp.listen(4000, () => console.log('Server running on port 4000!'))

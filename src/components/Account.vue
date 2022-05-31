@@ -47,7 +47,26 @@ export default {
             });
         },
 
-        deleteUser() {},
+        deleteAccount() {
+          document.getElementById('signin').click(); //not working??
+
+          /*axios.post('http://localhost:4000/DeleteAccount',{
+                username : this.$store.state.username,
+            })
+            .then(response =>{
+                console.log(response.data['result'])
+                if (response.data['status'] == 'pass'){
+                  alert("Account removed");
+                  document.getElementById('/').click(); //not working???
+                } else{
+                  alert("Account could not be deleted, try again");
+                }
+            })
+            .catch(function(error){
+                console.log(error.response.data);
+                alert("This Error")
+            });*/
+        },
 
         // on change upload function to change picture from files
         setDisplayPic(e) {

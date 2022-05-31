@@ -83,6 +83,7 @@ export default {
             .then(response =>{
                 console.log(response.data['result'])
                 alert("Question removed");
+                document.getElementById("questions").click(); 
             })
             .catch(function(error){
                 console.log(error.response.data);
@@ -102,6 +103,7 @@ export default {
             .then(response =>{
                 console.log(response.data['result'])
                 alert("Answer removed");
+                document.getElementById("questions").click(); 
             })
             .catch(function(error){
                 console.log(error.response.data);
