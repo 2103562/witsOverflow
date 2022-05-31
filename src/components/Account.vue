@@ -226,8 +226,6 @@ export default {
             </div>
 
             <div class="answers-container">
-              <p>{{ question.answers }}</p>
-              <p>answers</p>
             </div>
           </div>
 
