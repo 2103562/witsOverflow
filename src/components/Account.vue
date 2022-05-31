@@ -217,6 +217,7 @@ export default {
           v-for="question in questions"
           :key="question.id"
           class="list-group-item list-group-item-action d-flex flex-row"
+          :href="'?qid=' + question.id + '#/answer'"
         >
           <div class="buttons-container d-flex flex-column col-1">
             <div class="votes-container">

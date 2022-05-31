@@ -32,7 +32,6 @@ export default {
                 } 
              }).catch(error =>{
                 console.log(error);
-                alert("please fill in all fields")
             });
         }
     }   
