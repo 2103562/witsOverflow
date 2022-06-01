@@ -45,13 +45,27 @@ export default {
              .then(response =>{
                 console.log(response.data['status'])
                 if (response.data['status'] == 'true'){
+
                     this.$store.commit('logged',this.username)
                     this.$store.commit('setId',response.data['userId'])
                     console.log(this.$store.state.signedIn)
                     console.log(this.$store.state.username)
                     console.log(this.$store.state.userId)
                     document.getElementById("account").click()
-                } 
+
+                } else if(response.data['status'] == 'truemod'){
+
+                    this.$store.commit('logged',this.username)
+                    this.$store.commit('setId',response.data['userId'])
+                    console.log(this.$store.state.signedIn)
+                    console.log(this.$store.state.username)
+                    console.log(this.$store.state.userId)
+                    console.log(this.$store.state.moderator)
+                    document.getElementById("account").click()
+
+                } else{
+                    alert("Login unsuccessful, try again")
+                }
              }).catch(error =>{
                 console.log(error);
             });

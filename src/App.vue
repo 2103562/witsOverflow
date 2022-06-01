@@ -7,6 +7,7 @@ import Question from './components/Question.vue'
 import QuestionsTable from './components/QuestionsTable.vue'
 import Answer from './components/Answer.vue'
 import Forgotpassword from './components/Forgotpassword.vue'
+import DeleteAnswer from './components/DeleteAnswer.vue'
 
 
 
@@ -19,6 +20,7 @@ const routes = {
   '/questions': QuestionsTable,
   '/answer' : Answer,
   '/forgotpassword': Forgotpassword,
+  '/deleteanswer' :DeleteAnswer,
 }
 
 export default{

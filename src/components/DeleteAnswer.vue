@@ -2,13 +2,11 @@
 
 import axios  from "axios";
 export default {
-    name : 'Answer',
+    name : 'DeleteAnswer',
     data(){
 
         return{ 
-            question_asked : [] , 
             questionAnswers:[],
-            qid : '',
             answer_given : '',
             }
     },
@@ -18,24 +16,12 @@ export default {
         parameterCall: function() {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
-            const qid = urlParams.get('qid');
-            console.log(qid); 
+            const questionAnswers = urlParams.get('questionAnswers');
+            console.log(questionAnswers);
 
-            axios.post('http://localhost:4000/questionAsked',{
-                qid
-            })
-            .then(response =>{
-                console.log(response.data['result'])
-                this.question_asked = response.data['result']
-            })
-            .catch(function(error){
-                console.log(error.response.data);
-                alert("Error")
-            });
-
-            //displaying other answers to the question
-            axios.post('http://localhost:4000/questionAnswers',{
-                qid
+            //displaying answer that i want to delete
+            axios.post('http://localhost:4000/DisplayAnswerToDelete',{
+                questionAnswers
             })
             .then(response =>{
                 console.log(response.data['result'])
@@ -44,32 +30,6 @@ export default {
             .catch(function(error){
                console.log(error.response.data);
                alert("Error1")
-            });
-
-        },
-
-        AnswerCall : function(){
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            const qid = urlParams.get('qid');
-            console.log(qid);
-
-            var answer_given = String(document.getElementById("answer_given").value);
-            axios.post('http://localhost:4000/answer',{
-                qid,
-                answer_given : this.answer_given,
-                username : this.$store.state.username,
-            })
-            .then(response => {
-                console.log(response.data['status'])
-                if (response.data['status'] == 'pass'){
-                    alert ("Answer Submitted")
-                    document.getElementById("questions").click(); 
-                }  
-            })
-            .catch(function(error){
-                console.log(error.response.data);
-                alert("Error, please try again.")
             });
         },
 
@@ -86,54 +46,15 @@ export default {
                 console.log(response.data['result'])
                 if (response.data['status'] == 'pass1'){
                     alert("Answer removed");
-                    document.getElementById("questions").click(); 
+                    document.getElementById("questions").click(); //not working 
                 }else{
                     alert("Answer could not be deleted, try again");
                 }
-                
             })
             .catch(function(error){
                 console.log(error.response.data);
                 alert("Error")
             });
-        },
-
-        ModeratorDeleteQuestion : function(){
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            const qid = urlParams.get('qid');
-            console.log(qid); 
-
-            axios.post('http://localhost:4000/DeleteQuestion',{
-                qid
-            })
-            .then(response =>{
-                console.log(response.data['status'])
-                if (response.data['status'] == 'pass'){
-                    alert("Question removed");
-                    //this.testCall()
-                    //document.getElementById("questions").click(); 
-                }else{
-                    alert("Question could not be deleted, try again");
-                }
-                
-            })
-            .catch(function(error){
-                console.log(error.response.data);
-                alert("Error")
-            });
-             
-            axios.post('http://localhost:4000/DeleteQuestionAnswers',{
-                qid
-            })
-            .then(response =>{
-                console.log(response.data['status'])
-            })
-            .catch(function(error){
-                console.log(error.response.data);
-                alert("Error")
-            });
-            
         }
 
     },
@@ -148,30 +69,23 @@ export default {
         
             
                 <div class="account-container d-flex flex-column" > 
-                    <div   class = "row"> <h2>ANSWER QUESTION</h2>
+                    <div   class = "row"> <h2>DELETE ANSWER</h2>
                      </div>
                 <div class="output-group">
-                    <!--question asked-->
                 
                 <form>
 
-                    <b><p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;  "  font-weight:bold >Question Asked:</p></b>
-                    <p v-for="question_asked in question_asked" :key="question_asked.id" style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">{{question_asked.description}}</p>
-                    <p></p>
-                    
-                    <b><p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Other Answers:</p></b>
+                    <b><p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Delete this answer?</p></b>
                    <div class="top-questions-container d-flex flex-column">
                    <div class="list-group" >
-
-                    
-                    <a v-for="questionAnswers in questionAnswers" :key="questionAnswers.Answerid" class="list-group-item list-group-item-action d-flex flex-row" 
-                        :href="'?questionAnswers=' + questionAnswers.Answerid + '#/deleteanswer' " >
+                       
+                   <a v-for="questionAnswers in questionAnswers" :key="questionAnswers.Answerid" class="list-group-item list-group-item-action d-flex flex-row" 
+                        :href="'?questionAnswers=' + questionAnswers.Answerid " >
                    <div class="buttons-container d-flex flex-column col-1">
                         <div class="answers-container">
                             <p>{{questionAnswers.votes}}</p>
                                 <p>votes</p>
                         </div>
-                        
                         <div class="delete-answers">
                             <button type="button" @click="ModeratorDeleteAnswer">Delete Answer</button>
                         </div>
@@ -184,12 +98,6 @@ export default {
                     </a>
                     </div>
                     </div>
-
-                    <input v-model="answer_given" id="answer_given"  type="text"  class="question" placeholder="answer the question"  width="100%" required>
-                    <button class="post-answer-btn" @click="AnswerCall" >Submit Answer</button>
-                    <p></p>
-
-                    <button @click="ModeratorDeleteQuestion" type="button">Delete this Question</button>
                     
                 </form>
                 </div> 

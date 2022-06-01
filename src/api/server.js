@@ -86,9 +86,17 @@ exp.post('/login', (req, res) => {
     if(req.body.username != '' && req.body.password != ''){
         connection.query("select * from registered_user where Username = ?", [req.body.username], function (err, results, fields) {   
         const isValid = bcrypt.compare(req.body.password, String(results[3]));
-        if(results != 0 && isValid){
+        /*if(results != 0 && isValid){
             res.send({status: "true", userId:results[0]['Userid']});
         } else{
+            res.send({status:"false"})
+        }*/
+        //check if person is a moderator
+        if(results != 0 && isValid && String(results[4]) == "true"){
+            res.send({status: "truemod"});
+        } else if (results != 0 && isValid){
+            res.send({status:"true"})
+        } else {
             res.send({status:"false"})
         }
     });
@@ -150,7 +158,7 @@ exp.post('/questionAsked', (req, res) => {
 //display All other ANSWERS to the question in the answer page (Answer.vue)
 //when clicking on a question, all the answers to that question must be displayed on the answer page
 exp.post('/questionAnswers', (req, res) => {
-    connection.query("SELECT * FROM answers_table where questions_id = ?",[req.body.qid], function (err, result, fields) {
+    connection.query("SELECT * FROM answers_table2 where questions_id = ?",[req.body.qid], function (err, result, fields) {
         if(result){
             res.send({result: result, status: "true"});
         } else{
@@ -162,10 +170,11 @@ exp.post('/questionAnswers', (req, res) => {
 //answer a question (Answer.vue)
 exp.post('/answer', (req, res) => {
     database.execute(
-        'INSERT INTO answers_table (answer,questions_id) VALUES (@answer_given, @qid)',
+        'INSERT INTO answers_table2 (questions_id, answer, Username ) VALUES (@qid, @answer_given, @username )',
         {
             answer_given: req.body.answer_given,
             qid : req.body.qid,
+            username: req.body.username,//not getting inserted?
         }
     );
     res.send({status: "pass"}); //answer sent successfully
@@ -230,12 +239,40 @@ exp.post('/DeleteAccount', (req, res) => {
     res.send({status: "pass"}); //user deleted
 })
 
-//everything above works
+//when i click an answer it must take me to a page with just the answer that I clicked (DeleteAnswer.vue)
+exp.post('/DisplayAnswerToDelete', (req, res) => {
+    connection.query("SELECT * FROM answers_table2 where Answerid = ?",[req.body.questionAnswers], function (err, result, fields) {
+        if(result){
+            res.send({result: result, status: "true"});
+        } else{
+            res.send({status:"false"})
+        }
+    });
+})
 
+//moderator can delete an answer (Answer.vue)
+exp.post('/DeleteAnswer', (req, res) => {
+    database.execute(
+        //test if this is gna delete all the answers linked to that question id
+        'DELETE FROM answers_table2 WHERE Answerid = @answerid', 
+        {
+            answerid : req.body.questionAnswers,
+        },
+    )
+    res.send({status: "pass1"}); //specific answer deleted
+})
 
+//moderator can delete a question (Answer.vue)
+exp.post('/DeleteQuestionAnswers', (req, res) => {
+    database.execute(
+        'DELETE FROM answers_table2 WHERE questions_id = @qid', 
+        {
+            qid : req.body.qid,
+        },
+    )
+    res.send({status: "pass"}); //answers removed to the question deleted
+})
 
-
-//still working on this below
 //moderator can delete a question (Answer.vue)
 exp.post('/DeleteQuestion', (req, res) => {
     database.execute(
@@ -243,24 +280,8 @@ exp.post('/DeleteQuestion', (req, res) => {
         {
             qid : req.body.qid,
         },
-        'DELETE FROM answers_table WHERE questions_id = @qid', 
-        {
-            qid : req.body.qid,
-        },
     )
-    res.send({status: "pass"}); //question and it's answers deleted
-})
-
-//moderator can delete an answer (Answer.vue)
-exp.post('/DeleteQuestion', (req, res) => {
-    database.execute(
-        //test if this is gna delete all the answers linked to that question id
-        'DELETE FROM answers_table WHERE questions_id = @qid', 
-        {
-            qid : req.body.qid,
-        },
-    )
-    res.send({status: "pass1"}); //specific answer deleted
+    res.send({status: "pass"}); //question deleted
 })
 
 // Start the Express server
