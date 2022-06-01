@@ -165,7 +165,7 @@ exp.post('/AskQuestion', (req, res) => {
 //answer a question (Answer.vue)
 exp.post('/answer', (req, res) => {
     database.execute(
-        'INSERT INTO answers_table3 (questions_id, answer, username ) VALUES (@qid, @answer_given, @username )',
+        'INSERT INTO answers_table2 (questions_id, answer, username ) VALUES (@qid, @answer_given, @username )',
         {
             answer_given: req.body.answer_given,
             qid : req.body.qid,
