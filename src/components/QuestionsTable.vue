@@ -52,6 +52,8 @@ export default {
                     <div class="d-flex flex-column col justify-content-between">
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
+                         <button class="btn-upvote"   @click.once="question.votes++">Upvote</button>
+                        <button class="btn-upvote" v-if="question.votes>=1"  @click.once=question.votes-->Downvote</button>
                     </div>
 
                 </a>
@@ -156,5 +158,21 @@ export default {
 .btn-ask-question{
     background: #0d6efd;
     color: white;
+}
+.btn-upvote{
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    width: 90px;
+    height: 45px;
+    padding: 7px;
+    margin-top: 8px;
+    background: #0d6efd;
+    border: 1px #0d6efd solid ;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 </style>
