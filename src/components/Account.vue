@@ -352,8 +352,92 @@ export default {
   text-decoration: none;
 }
 
+
+
+
 /* makes input file type on upload button invisible */
 input[type="file"] {
   display: none;
+}
+
+
+
+
+/* ----------------------------------------------------------------------------------------------------------------------- */
+.top-questions-container{
+    margin: 50px auto;
+    width: 90%;
+}
+
+
+.list-group{
+    width: 100%;
+    margin: 30px auto;
+}
+
+.list-group a{
+    padding: 15px;
+}
+
+.buttons-container{
+    margin-right: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.votes-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: hsl(210,8%,45%);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    text-align: center;
+    width: 90px;
+}
+
+.answers-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: hsl(140,40%,55%);
+    border-radius: 6px;
+    text-align: center;
+    width: 90px;
+}
+
+.answers-container p{
+    color: white;
+}
+
+
+.votes-container p, .answers-container p{
+    margin: 0;
+}
+
+.function-buttons-container{
+    justify-content: center;
+    align-items: center;
+}
+
+.function-buttons-container a{
+    margin: 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    width: 130px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 7px;
+}
+
+.btn-ask-question{
+    background: #0d6efd;
+    color: white;
 }
 </style>
