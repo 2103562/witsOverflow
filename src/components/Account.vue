@@ -5,11 +5,6 @@ export default {
   data() {
     return {
       questions: [],
-      // item sets upload image default to null and user avater image
-      item: {
-        image: null,
-        imageUrl: "",
-      },
     };
   },
   methods: {
@@ -68,12 +63,7 @@ export default {
             });*/
         },
 
-        // on change upload function to change picture from files
-        setDisplayPic(e) {
-            const file = e.target.files[0];
-            this.image = file;
-            this.item.imageUrl = URL.createObjectURL(file);
-        },
+        
 
         validate() {
             //extract values
@@ -123,25 +113,7 @@ export default {
 <template>
   <div class="account-container d-flex flex-column">
     <div class="row">
-      <h2>Account</h2>
-
-      <div class="d-flex flex-column">
-        <h5 class="avatar-header">Avatar</h5>
-        <div id="preview" class="img-container d-flex">
-          <!-- upload button functionality -->
-          <img v-if="item.imageUrl" :src="item.imageUrl" class="user-avatar" />
-          <label class="upload-button">
-            <input
-              id="browse"
-              type="file"
-              accept="image/*"
-              style="hidden"
-              @change="setDisplayPic"
-            />
-            <i></i> Upload
-          </label>
-        </div>
-      </div>
+      <h2>Account</h2>      
     </div>
     <div id="invalidate">
       <div class="row d-flex flex-row justify-content-between">

@@ -163,7 +163,6 @@ export default {
                     <b><p style=" position: relative;left:20px; top:10px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Other Answers:</p></b>
                    <div class="top-questions-container d-flex flex-column">
                    <div class="list-group" >
-
                     
                     <a v-for="questionAnswers in questionAnswers" :key="questionAnswers.Answerid" class="list-group-item list-group-item-action d-flex flex-row" 
                         :href="'?questionAnswers=' + questionAnswers.Answerid + '#/deleteanswer' " >

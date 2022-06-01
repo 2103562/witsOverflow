@@ -21,20 +21,22 @@ export default {
             <a class="nav-item nav-link active" href="#/">Home</a>
    
             <template v-if="this.$store.state.signedIn == false">
-            <a id="account" class="nav-item nav-link disabled" href="#/account">Account</a>
-            <a class="nav-item nav-link" href="#/questions"> View all questions</a>
-            <a class="btn btn-outline-primary btn-login" href="#/signin">Sign in</a>
+            <a class="btn btn-outline-primary btn-login" href="#/signin" >Sign in</a>
             <a class="btn btn-outline-primary btn-signup" href="#/signin">Sign up</a>
+            <a style="visibility:hidden;" class="nav-item nav-link" href="#/">Logout</a>
+            <a style="visibility:hidden;" id="account" class="nav-item nav-link disabled" href="#/account">Account</a>
+            <a style="visibility:hidden;" class="nav-item nav-link" href="#/questions"> View all questions</a>
+            <a style="visibility:hidden;" class="nav-item nav-link" href="#/question">Ask a question</a>
             </template>
 
             <template v-else>
             <a class="nav-item nav-link" href="#/account">Account</a>
             <a class="nav-item nav-link" href="#/questions"> View all questions</a>
+            <a class="nav-item nav-link" href="#/question">Ask a question</a>
+            <a class="nav-item nav-link" href="/">Logout</a>
             <a class="btn btn-outline-primary btn-login disabled" href="#/signin">Log in</a>
             <a class="btn btn-outline-primary btn-signup disabled" href="#/signin">Sign up</a>
             </template>
-
-
 
         </div>
 
