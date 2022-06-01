@@ -110,8 +110,7 @@ export default {
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
                         <div class="d-flex flex-row row justify-content-between" >
-                        <button class="btn-upvote"   @click.once="question.votes++">Upvote</button>
-                        <button class="btn-upvote" v-if="question.votes>=1"  @click.once=question.votes-->Downvote</button>
+                       
                         </div>
                     </div>
 
@@ -164,8 +163,7 @@ export default {
                     <div class="d-flex flex-row row justify-content-between">
                         <small>{{question.user}}</small>
                         <small>{{question.time}}</small>
-                        <button class="btn-upvote" :class="{disabledbutton: !isPressed}" :disabled="!isPressed" @click.once="question.upvote">Upvote</button>
-                        <button class="btn-upvote" v-if="question.votes>=1" :class="{disabledbutton: !isPressed}" :disabled="!isPressed" @click.once=question.votes-->Downvote</button>
+                       
 
                     </div>
 
