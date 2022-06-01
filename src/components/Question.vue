@@ -18,19 +18,19 @@ export default {
         },
         
         PostQuestionCall(){
-             axios.post('http://localhost:4000/AskQuestion',{
-                 heading : this.heading,
-                 description : this.description,
-                 tags : this.tags,
-                 user : this.$store.state.username,
-             })
-             .then(response =>{
-                console.log(response.data['status'])
+            axios.post('http://localhost:4000/AskQuestion',{
+                heading : this.heading,
+                description : this.description,
+                tags : this.tags,
+                user : this.$store.state.username,
+            })
+            .then(response =>{
+               console.log(response.data['status'])
                 if (response.data['status'] == 'true'){
                     alert("Question posted successfully")
                     document.getElementById("question").click();
                 } 
-             }).catch(error =>{
+            }).catch(error =>{
                 console.log(error);
             });
         }

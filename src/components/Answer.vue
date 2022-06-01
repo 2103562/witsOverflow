@@ -10,7 +10,7 @@ export default {
             questionAnswers:[],
             qid : '',
             answer_given : '',
-            }
+        }
     },
 
     methods : {
@@ -53,7 +53,8 @@ export default {
             const urlParams = new URLSearchParams(queryString);
             const qid = urlParams.get('qid');
             console.log(qid);
-
+            console.log(this.$store.state.username)
+            
             var answer_given = String(document.getElementById("answer_given").value);
             axios.post('http://localhost:4000/answer',{
                 qid,

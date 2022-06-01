@@ -88,9 +88,9 @@ exp.post('/login', (req, res) => {
         const isValid = bcrypt.compare(req.body.password, String(results[3]));
         //check if person is a moderator
         if(results != 0 && isValid && String(results[4]) == "true"){
-            res.send({status: "truemod", userId:results[0]['Userid']});
+            res.send({status: "truemod", userId:results[0]['Userid'], username:results[1]});
         } else if (results != 0 && isValid){
-            res.send({status: "true", userId:results[0]['Userid']});
+            res.send({status: "true", userId:results[0]['Userid'], username:results[1]});
         } else {
             res.send({status:"false"})
         }
@@ -110,21 +110,6 @@ exp.get('/questionsHomepage', (req, res) => {
             res.send({status:"false"})
         }
     });
-})
-
-//Ask a question (Question.vue) - insert a question into the question table
-exp.post('/AskQuestion', (req, res) => {
-    database.execute(
-        'INSERT INTO tbl_question(description, heading, user, time, tags, votes, answers) VALUES (@description,@heading,@user,current_timestamp(),@tags,0,0)',
-        {
-            description: req.body.description,
-            heading: req.body.heading,
-            tags: req.body.tags,
-            user : req.body.user,
-        }
-    );
-    //question posted successfully
-    res.send({status: "true"}); 
 })
 
 // questions to display on question page (QuestionsTable.vue)
@@ -162,10 +147,25 @@ exp.post('/questionAnswers', (req, res) => {
     });
 })
 
+//Ask a question (Question.vue) - insert a question into the question table
+exp.post('/AskQuestion', (req, res) => {
+    database.execute(
+        'INSERT INTO tbl_question(description, heading, user, time, tags, votes, answers) VALUES (@description,@heading,@user,current_timestamp(),@tags,0,0)',
+        {
+            description: req.body.description,
+            heading: req.body.heading,
+            tags: req.body.tags,
+            user : req.body.user,
+        }
+    );
+    //question posted successfully
+    res.send({status: "true"}); 
+})
+
 //answer a question (Answer.vue)
 exp.post('/answer', (req, res) => {
     database.execute(
-        'INSERT INTO answers_table2 (questions_id, answer, Username ) VALUES (@qid, @answer_given, @username )',
+        'INSERT INTO answers_table3 (questions_id, answer, username ) VALUES (@qid, @answer_given, @username )',
         {
             answer_given: req.body.answer_given,
             qid : req.body.qid,

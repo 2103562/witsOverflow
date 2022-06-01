@@ -48,6 +48,7 @@ export default {
 
                     this.$store.commit('logged',this.username)
                     this.$store.commit('setId',response.data['userId'])
+                    this.$store.commit('setusername',response.data['username'])
                     console.log(this.$store.state.signedIn)
                     console.log(this.$store.state.username)
                     console.log(this.$store.state.userId)
@@ -57,6 +58,7 @@ export default {
 
                     this.$store.commit('logged',this.username)
                     this.$store.commit('setId',response.data['userId'])
+                    this.$store.commit('setusername',response.data['username'])
                     console.log(this.$store.state.signedIn)
                     console.log(this.$store.state.username)
                     console.log(this.$store.state.userId)
