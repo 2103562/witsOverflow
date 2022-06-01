@@ -86,16 +86,11 @@ exp.post('/login', (req, res) => {
     if(req.body.username != '' && req.body.password != ''){
         connection.query("select * from registered_user where Username = ?", [req.body.username], function (err, results, fields) {   
         const isValid = bcrypt.compare(req.body.password, String(results[3]));
-        /*if(results != 0 && isValid){
-            res.send({status: "true", userId:results[0]['Userid']});
-        } else{
-            res.send({status:"false"})
-        }*/
         //check if person is a moderator
         if(results != 0 && isValid && String(results[4]) == "true"){
-            res.send({status: "truemod"});
+            res.send({status: "truemod", userId:results[0]['Userid']});
         } else if (results != 0 && isValid){
-            res.send({status:"true"})
+            res.send({status: "true", userId:results[0]['Userid']});
         } else {
             res.send({status:"false"})
         }
