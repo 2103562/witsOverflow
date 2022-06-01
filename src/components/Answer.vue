@@ -173,7 +173,7 @@ export default {
                         </div>
                         
                         <div class="delete-answers">
-                            <button type="button" @click="ModeratorDeleteAnswer">Delete Answer</button>
+                            <p>Delete Answer</p>
                         </div>
                         </div>
 
@@ -189,7 +189,7 @@ export default {
                     <button class="post-answer-btn" @click="AnswerCall" >Submit Answer</button>
                     <p></p>
 
-                    <button @click="ModeratorDeleteQuestion" type="button">Delete this Question</button>
+                    <button @click="ModeratorDeleteQuestion" type="button" class="delete-answer-button">Delete this Question</button>
                     
                 </form>
                 </div> 
@@ -252,9 +252,21 @@ export default {
     margin: 0;
 }
 
-.delete-answers button{
+.delete-answers p{
     position: relative;
-    left: 710px;
+    left: 720px;
+    bottom: 50px;
+    background: #ee0303;
+    border: 0;
+    outline: none;
+    border-radius: 6px;
+    color: white;
+    text-align: center;
+}
+
+.delete-answer-button{
+    position: relative;
+    right: -23px;
     bottom: 25px;
     width: 120px;
     background: #ee0303;
@@ -263,6 +275,7 @@ export default {
     border-radius: 6px;
     color: white;
 }
+
 
 .function-buttons-container{
     justify-content: center;
@@ -353,6 +366,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 0;
+    position: relative;
+    left: -120px;
+    top: 35px;
     border-radius: 6px;
     text-decoration: none;
     margin-left: auto;
