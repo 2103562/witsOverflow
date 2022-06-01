@@ -61,7 +61,7 @@ export default {
             .then(response => {
                 console.log(response.data['status'])
                 if (response.data['status'] == 'pass'){
-                    alert ("Answer Submited")
+                    alert ("Answer Submitted")
                     document.getElementById("questions").click(); 
                 }  
             })
@@ -143,6 +143,9 @@ export default {
                             <p>{{questionAnswers.votes}}</p>
                                 <p>votes</p>
                         </div>
+                        <div class="delete-answers">
+                            <button type="button">Delete Answer</button>
+                        </div>
                         </div>
 
                         <div class="d-flex d-flex flex-column col-9">
@@ -216,6 +219,18 @@ export default {
 
 .votes-container p, .answers-container p{
     margin: 0;
+}
+
+.delete-answers button{
+    position: relative;
+    left: 710px;
+    bottom: 25px;
+    width: 120px;
+    background: #ee0303;
+    border: 0;
+    outline: none;
+    border-radius: 6px;
+    color: white;
 }
 
 .function-buttons-container{
