@@ -43,7 +43,7 @@ export default {
         <a class="navbar-brand">{{title}}</a>
 
         <div class="navbar-nav d-flex flex-row">
-            <a class="nav-item nav-link active" href="#/">Home</a>
+            <a id="home" class="nav-item nav-link active" href="#/">Home</a>
    
             <template v-if="this.$store.state.signedIn == false">
             <a class="btn btn-outline-primary btn-login" href="#/signin" >Sign in</a>
