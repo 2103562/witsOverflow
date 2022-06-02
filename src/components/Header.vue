@@ -5,6 +5,31 @@ export default {
         return {
             title : 'witsOverflow',
         }
+    },
+    methods : {
+        filterFunction() {
+            // Declare variables
+            var input, filter, list, a, i, txtValue, divs, header;
+            input = document.getElementById('myInput');
+            filter = input.value.toUpperCase();
+            list = document.getElementsByClassName("list-group")[0];
+            a = list.getElementsByTagName('a');
+            console.log(a)
+            console.log(filter)
+
+            // Loop through all list items, and hide those who don't match the search query
+            for (i = 0; i < a.length; i++) {
+                divs = a[i].getElementsByTagName("div")[3];
+                header = divs.getElementsByTagName("h5")[0];
+                txtValue = header.textContent || header.innerText;
+                console.log(txtValue.toUpperCase().indexOf(filter) > -1)
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    a[i].setAttribute("style","display:flex !important");
+                } else {
+                    a[i].setAttribute("style","display:none !important");
+                }
+            }
+        }
     }
 }
 </script>
