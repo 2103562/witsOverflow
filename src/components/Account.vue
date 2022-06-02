@@ -43,7 +43,7 @@ export default {
         },
 
         deleteAccount() {
-          document.getElementById('signin').click(); //not working??
+          document.getElementById('home').click(); //now its working :)
 
           /*axios.post('http://localhost:4000/DeleteAccount',{
                 username : this.$store.state.username,
