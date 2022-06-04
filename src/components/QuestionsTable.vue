@@ -96,9 +96,10 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: hsl(210,8%,45%);
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    color: white;
+    background: hsl(140,40%,55%);
+    border-radius: 6px;
+    padding: 2px;
     text-align: center;
     width: 90px;
 }
