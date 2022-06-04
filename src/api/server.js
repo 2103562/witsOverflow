@@ -248,7 +248,6 @@ exp.post('/DisplayAnswerToDelete', (req, res) => {
 //moderator can delete an answer (Answer.vue)
 exp.post('/DeleteAnswer', (req, res) => {
     database.execute(
-        //test if this is gna delete all the answers linked to that question id
         'DELETE FROM answers_table2 WHERE Answerid = @answerid', 
         {
             answerid : req.body.questionAnswers,

@@ -43,16 +43,14 @@ export default {
         },
 
         deleteAccount() {
-          document.getElementById('home').click(); //now its working :)
-
-          /*axios.post('http://localhost:4000/DeleteAccount',{
+          axios.post('http://localhost:4000/DeleteAccount',{
                 username : this.$store.state.username,
             })
             .then(response =>{
                 console.log(response.data['result'])
                 if (response.data['status'] == 'pass'){
                   alert("Account removed");
-                  document.getElementById('/').click(); //not working???
+                  document.getElementById('home').click();
                 } else{
                   alert("Account could not be deleted, try again");
                 }
@@ -60,7 +58,7 @@ export default {
             .catch(function(error){
                 console.log(error.response.data);
                 alert("This Error")
-            });*/
+            });
         },
 
         
