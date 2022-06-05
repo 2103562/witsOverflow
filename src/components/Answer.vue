@@ -112,8 +112,7 @@ export default {
                 console.log(response.data['status'])
                 if (response.data['status'] == 'pass'){
                     alert("Question removed");
-                    //this.testCall()
-                    //document.getElementById("questions").click(); 
+                    document.getElementById("questions").click(); 
                 }else{
                     alert("Question could not be deleted, try again");
                 }
