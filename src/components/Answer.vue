@@ -134,7 +134,30 @@ export default {
                 alert("Error")
             });
             
-        }
+        },
+            CommentCall : function(answer_id){
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const qid = urlParams.get('qid');
+            console.log(qid);
+            console.log(this.$store.state.username)
+            
+            var comment_given = String(document.getElementById("comment_given").value);
+            axios.post('http://localhost:4000/comment',{
+                comment : comment_given,
+                answer_id : answer_id,
+            })
+            .then(response => {
+                console.log(response.data['status'])
+                if (response.data['status'] == 'pass'){
+                    alert ("Comment Submitted")
+                }  
+            })
+            .catch(function(error){
+                console.log(error.response.data);
+                alert("Error, please try again.")
+            });
+        },
 
     },
     mounted(){
@@ -174,10 +197,18 @@ export default {
                         <div class="delete-answers">
                             <p>Delete Answer</p>
                         </div>
+                        
                         </div>
 
                         <div class="d-flex d-flex flex-column col-9">
                         <p class="mb-1">{{questionAnswers.answer}}</p>
+                        <p class="mb-1">Comments: </p>
+                        <p>{{questionAnswers.comment}} </p>
+           
+                            <div class="d-flex flex-row">
+                                <button type="button" class="post-comment" @click="CommentCall(questionAnswers.answer_id)">Post comment</button>
+                            </div>
+
                         </div>
 
                     </a>
@@ -185,11 +216,15 @@ export default {
                     </div>
 
                     <input v-model="answer_given" id="answer_given"  type="text"  class="question" placeholder="answer the question"  width="100%" required>
+                    <input id="comment_given" type="text" class="question" placeholder="comment on question" width="100%">
                     <button class="post-answer-btn" @click="AnswerCall" >Submit Answer</button>
-                    <p></p>
 
-                    <button @click="ModeratorDeleteQuestion" type="button" class="delete-answer-button">Delete this Question</button>
-                    
+                    <div class="d-flex flex-row">
+                        <button @click="ModeratorDeleteQuestion" type="button" class="delete-answer-button">Delete Question</button>
+                        
+                    </div>
+
+
                 </form>
                 </div> 
         </div>    
@@ -416,5 +451,17 @@ export default {
   outline: 1px solid slategrey;
 }
 
+.post-comment{
+    width: 150px;
+    height: 40px;
+    color: white;
+    font-weight: 700;
+    background: #1aa3ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #1aa3ff;
+    border-radius: 4px;
+}
 
 </style>
