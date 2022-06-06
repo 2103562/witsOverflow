@@ -138,7 +138,7 @@ exp.post('/questionAsked', (req, res) => {
 //display All other ANSWERS to the question in the answer page (Answer.vue)
 //when clicking on a question, all the answers to that question must be displayed on the answer page
 exp.post('/questionAnswers', (req, res) => {
-    connection.query("select * from answers_table2,tbl_comments where answers_table2.questions_id =? and tbl_comments.answer_id = answers_table2.Answerid",[req.body.qid], function (err, result, fields) {
+    connection.query("SELECT * FROM answers_table2 where questions_id = ?",[req.body.qid], function (err, result, fields) {
         if(result){
             res.send({result: result, status: "true"});
         } else{
@@ -175,17 +175,6 @@ exp.post('/answer', (req, res) => {
     res.send({status: "pass"}); //answer sent successfully
 })
 
-//comment on answer(Answer.vue)
-exp.post('/comment', (req, res) => {
-    database.execute(
-        'INSERT INTO tbl_comments ( answer_id, comment ) VALUES (@answer_id, @comment)',
-        {
-            answer_id : req.body.answer_id,
-            comment: req.body.comment,//not getting inserted?
-        }
-    );
-    res.send({status: "pass"}); //answer sent successfully
-})
 //display questions asked by the user who is logged in (Account.vue)
 exp.post("/account/questions", (req, res) => {
     connection.query(
